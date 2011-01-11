@@ -45,8 +45,8 @@ $this->breadcrumbs=array(
 					<?php $id = $cat."-".$k ?>
 					<div style="width: 130px; float:left;">
 						<label for="<?php echo $id ?>">
-							<input id="<?php echo $id ?>" value="<?php echo $cat."/".$k ?>" class="checkbox" type="checkbox" name="actions[]"/>
-							<?php echo $v->noaction?"<strike>".$k."</strike>":$k ?>
+							<input id="<?php echo $id ?>" value="<?php echo $v[0]->name; ?>" class="checkbox" type="checkbox" name="actions[]"/>
+							<?php echo $v[1]?"<strike>".$k."</strike>":$k ?>
 						</label>
 					</div>
 					<?php } ?>
@@ -68,4 +68,13 @@ $this->breadcrumbs=array(
 			}
 		});
 	});
+	
+	function check(obj)
+	{
+		var frm = obj.form;
+		for (var i = 0; i < frm.elements.length; i++) {
+			if (frm.elements[i].name == "actions"){
+			}
+		}
+	}
 </script>

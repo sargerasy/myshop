@@ -22,6 +22,10 @@ class Utils
 		return $result;
 	}
 
+	public static function createStruct($init, $items, $reverse)
+	{
+	}
+
 	public static function t($msg)
 	{
 		return Yii::t('messages', $msg);

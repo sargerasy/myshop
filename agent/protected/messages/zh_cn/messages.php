@@ -38,7 +38,7 @@ return array (
  'List Tasks' => '任务列表',
  'Add Task' => '添加任务',
  'List Roles' => '角色列表',
- 'Add Role' => '添加角色',
+ 'Create Role' => '添加角色',
  'Assign Role' => '赋予角色',
  'List Users' => '用户列表',
  'Add User' => '添加用户',
@@ -59,5 +59,6 @@ return array (
  'Delete'=>'删除',
  'UnSelected Action'=>'未生效操作',
  'Select ALL'=>'全部选择',
+ 'Operation Successful'=>'操作成功',
 );
 

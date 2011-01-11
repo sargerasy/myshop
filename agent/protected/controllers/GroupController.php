@@ -126,6 +126,7 @@ class GroupController extends Controller
 		$group = $this->loadModel($_REQUEST['group_id']);
 		$users = $_REQUEST['users'];
 		$group->addMembers($users);
+		Yii::app()->user->setFlash('success', Utils::t('Operation Successful'));
 		$this->redirect(array('member', id=>$group->group_id));
 	}
 

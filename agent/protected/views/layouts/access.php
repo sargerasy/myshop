@@ -4,7 +4,7 @@ $this->menu = array(
 		//array('label'=>Utils::t('List Tasks'), 'url'=>array('task')),
 		//array('label'=>Utils::t('Add Task'), 'url'=>array('addTask')),
 		array('label'=>Utils::t('List Roles'), 'url'=>array('role')),
-		array('label'=>Utils::t('Add Role'), 'url'=>array('addRole')),
+		array('label'=>Utils::t('Create Role'), 'url'=>array('createRole')),
 		array('label'=>Utils::t('Assign Role'), 'url'=>array('assignRole')),
 	);
 ?>
