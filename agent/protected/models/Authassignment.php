@@ -1,25 +1,22 @@
 <?php
 
 /**
- * This is the model class for table "authitem".
+ * This is the model class for table "authassignment".
  *
- * The followings are the available columns in table 'authitem':
- * @property string $name
- * @property integer $type
- * @property string $description
+ * The followings are the available columns in table 'authassignment':
+ * @property string $itemname
+ * @property string $userid
  * @property string $bizrule
  * @property string $data
  *
  * The followings are the available model relations:
- * @property Authassignment[] $authassignments
- * @property Authitemchild[] $authitemchildren
+ * @property Authitem $itemname0
  */
-class Authitem extends CActiveRecord
+class Authassignment extends CActiveRecord
 {
-	public $noaction;
 	/**
 	 * Returns the static model of the specified AR class.
-	 * @return Authitem the static model class
+	 * @return Authassignment the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -31,7 +28,7 @@ class Authitem extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'authitem';
+		return 'authassignment';
 	}
 
 	/**
@@ -42,13 +39,12 @@ class Authitem extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name, type', 'required'),
-			array('type', 'numerical', 'integerOnly'=>true),
-			array('name', 'length', 'max'=>64),
-			array('description, bizrule, data', 'safe'),
+			array('itemname, userid', 'required'),
+			array('itemname, userid', 'length', 'max'=>64),
+			array('bizrule, data', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('name, type, description, bizrule, data', 'safe', 'on'=>'search'),
+			array('itemname, userid, bizrule, data', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -60,10 +56,7 @@ class Authitem extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'authassignments' => array(self::HAS_MANY, 'Authassignment', 'itemname'),
-			'authitemchildren' => array(self::HAS_MANY, 'Authitemchild', 'child'),
-			'users' => array(self::MANY_MANY, 'User',
-				'authassignment(itemname, userid)'),
+			'itemname0' => array(self::BELONGS_TO, 'Authitem', 'itemname'),
 		);
 	}
 
@@ -73,9 +66,8 @@ class Authitem extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'name' => 'Name',
-			'type' => 'Type',
-			'description' => 'Description',
+			'itemname' => 'Itemname',
+			'userid' => 'Userid',
 			'bizrule' => 'Bizrule',
 			'data' => 'Data',
 		);
@@ -92,21 +84,13 @@ class Authitem extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('name',$this->name,true);
-		$criteria->compare('type',$this->type);
-		$criteria->compare('description',$this->description,true);
+		$criteria->compare('itemname',$this->itemname,true);
+		$criteria->compare('userid',$this->userid,true);
 		$criteria->compare('bizrule',$this->bizrule,true);
 		$criteria->compare('data',$this->data,true);
 
 		return new CActiveDataProvider(get_class($this), array(
 			'criteria'=>$criteria,
 		));
-	}
-
-	public static function delItems($items)
-	{
-		$criteria = new CDbCriteria;
-		$criteria->addInCondition('name', $items);
-		self::model()->deleteAll($criteria);
 	}
 }

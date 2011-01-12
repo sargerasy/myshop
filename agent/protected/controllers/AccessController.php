@@ -94,9 +94,11 @@ class AccessController extends Controller
 		}
 		$authitem = $auth->getOperations();
 		$roles = $auth->getRoles();
-		$selects = array('Roles'=>array());
+		$selects = array();
 
 		foreach($roles as $role) {
+			if(!array_key_exists('Roles', $selects))
+				$selects['Roles'] = array();
 			$selects['Roles'][$role->name] = array($role, false);
 		}
 
@@ -142,10 +144,10 @@ class AccessController extends Controller
 					}
 				}
 				if($op)
-					$auth->removeItemChild($name, $action);
+					$auth->removeItemChild($name, $child->name);
 			}
 			Yii::app()->user->setFlash('success', Utils::t('Operation Successful'));
-			$this->redirect(array('updateRole', array('name'=>$name)));
+			$this->redirect($this->createUrl('updateRole', array('name'=>$name)));
 		}
 
 		$authitem = $auth->getOperations();
@@ -153,7 +155,7 @@ class AccessController extends Controller
 		$selects = array();
 
 		foreach($roles as $role) {
-			if($role->name == $name)
+			if($role->name == $name || $auth->detectLoop($name, $role->name))
 				continue;
 			if(!array_key_exists('Roles', $selects))
 				$selects['Roles'] = array();
@@ -176,6 +178,50 @@ class AccessController extends Controller
 			"action"=>$this->createUrl("", array('name'=>$name)),
 			"name"=>$name,
 		));
+	}
+
+	public function actionDeleteRole($name)
+	{
+		if(Yii::app()->request->isPostRequest)
+		{
+			$auth = Yii::app()->authManager;
+			$auth->removeAuthItem($name);
+
+			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+			if(!isset($_GET['ajax']))
+				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+		}
+		else
+			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+	}
+
+	public function actionAssignRole($name)
+	{
+		if(isset($_POST['users'])) {
+			$auth = Yii::app()->authManager;
+			$users = $_POST['users'];
+			foreach($users as $user) {
+				$auth->assign($name, $user);
+			}
+			Yii::app()->user->setFlash('success', Utils::t('Operation Successful'));
+			$this->redirect(array('assignRole', 'name'=>$name));
+		}
+
+		$role = AuthItem::model()->findByAttributes(array('name'=>$name));
+		$_users = User::model()->findAll();
+		$users = Utils::exclude($_users, $role->users, 'user_id');
+
+		$this->render('assign', array(
+			'role' => $role,
+			'users' => $users,
+			'action'=>Yii::app()->controller->createUrl("access/assignRole", array('name'=>$role->name)),
+		));
+	}
+
+	public function actionRemove($role, $user_id)
+	{
+		Yii::app()->authManager->revoke($role, $user_id);
+		Yii::app()->user->setFlash('success', Utils::t('Operation Successful'));
 	}
 
 	// Uncomment the following methods and override them if needed

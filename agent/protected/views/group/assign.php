@@ -1,9 +1,9 @@
 <?php
 $this->breadcrumbs=array(
-	Utils::t('Access') => array('access/list'),
-	Utils::t('Update Role'),
+	Utils::t('Group') => array('access/list'),
+	Utils::t('Assign Role'),
 );?>
-<h1><?php echo Utils::t("Update Role").":".$name?></h1>
+<h1><?php echo Utils::t("assign Role").":".$name?></h1>
 
 <div class="list-div">
 	<form action="<?php echo $action ?>" method="POST">

@@ -26,6 +26,23 @@ class Utils
 	{
 	}
 
+	public static function exclude($main, $sub, $attr)
+	{
+		$result = array();
+		foreach($main as $m) {
+			$exist = false;
+			foreach($sub as $s) {
+				if($m->attributes[$attr] == $s->attributes[$attr]) {
+					$exist = true;
+					break;
+				}
+			}
+			if(!$exist)
+				$result[] = $m;
+		}
+		return $result;
+	}
+
 	public static function t($msg)
 	{
 		return Yii::t('messages', $msg);

@@ -1,16 +1,16 @@
 <?php
 $this->breadcrumbs=array(
-	Utils::t('Groups')=>array('list'),
-	Utils::t('Members'),
+	Utils::t('Access')=>array('list'),
+	Utils::t('Assign Role'),
 );
 
 ?>
 
-<h1><?php echo $model->group_name ?></h1>
+<h1><?php echo $role->name ?></h1>
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
-	'id'=>'member-grid',
-	'dataProvider'=>$model->members(),
+	'id'=>'role-grid',
+	'dataProvider'=>new CActiveDataProvider(AuthItem, array('data'=>$role->users)),
 //	'filter'=>$model,
 	'columns'=>array(
 		'user_id',
@@ -19,7 +19,7 @@ $this->breadcrumbs=array(
 			'class'=>'CButtonColumn',
 			'template'=>'{update}{delete}',
 			'updateButtonUrl'=>'Yii::app()->controller->createUrl("user/update",array("id"=>$data->primaryKey))',
-			'deleteButtonUrl'=>'Yii::app()->controller->createUrl("group/remove",array("group_id"=>'.$model->group_id.',"user_id"=>$data->primaryKey))',
+			'deleteButtonUrl'=>'Yii::app()->controller->createUrl("access/remove",array("role"=>'.$role->name.',"user_id"=>$data->primaryKey))',
 		),
 	),
 )); ?>
@@ -43,7 +43,7 @@ $this->breadcrumbs=array(
 		<dd>
 		</dd>
 		<p style="text-align:right;">
-			<input type="hidden" name="group_id" value="<?php echo $model->group_id ?>"/>
+			<input type="hidden" name="name" value="<?php echo $role->name ?>"/>
 			<input type="submit" value="submit"/>
 		</p>
 	</fieldset>

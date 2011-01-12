@@ -60,5 +60,6 @@ return array (
  'UnSelected Action'=>'未生效操作',
  'Select ALL'=>'全部选择',
  'Operation Successful'=>'操作成功',
+ 'Update Role'=>'修改角色',
 );
 

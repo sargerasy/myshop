@@ -1,11 +1,13 @@
 <?php
 $this->menu = array(
-		array('label'=>Utils::t('List Operations'), 'url'=>array('operation')),
+		array('label'=>Utils::t('List Users'), 'url'=>array('user/list')),
+		array('label'=>Utils::t('Add User'), 'url'=>array('user/create')),
+		array('label'=>Utils::t('List Operations'), 'url'=>array('access/operation')),
 		//array('label'=>Utils::t('List Tasks'), 'url'=>array('task')),
 		//array('label'=>Utils::t('Add Task'), 'url'=>array('addTask')),
-		array('label'=>Utils::t('List Roles'), 'url'=>array('role')),
-		array('label'=>Utils::t('Create Role'), 'url'=>array('createRole')),
-		array('label'=>Utils::t('Assign Role'), 'url'=>array('assignRole')),
+		array('label'=>Utils::t('List Roles'), 'url'=>array('access/role')),
+		array('label'=>Utils::t('Create Role'), 'url'=>array('access/createRole')),
+		//array('label'=>Utils::t('Assign Role'), 'url'=>array('assignRole')),
 	);
 ?>
 <?php $this->beginContent('//layouts/main'); ?>

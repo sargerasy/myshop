@@ -16,6 +16,10 @@ $this->breadcrumbs=array(
 		'name',
 		array(
 			'class'=>'CButtonColumn',
+			'viewButtonUrl'=>'Yii::app()->controller->createUrl("access/assignRole", array("name"=>$data->primaryKey))',
+			'updateButtonUrl'=>'Yii::app()->controller->createUrl("access/updateRole",array("name"=>$data->primaryKey))',
+			'deleteButtonUrl'=>'Yii::app()->controller->createUrl("access/deleteRole",array("name"=>$data->primaryKey))',
 		),
 	),
 )); ?>
+
