@@ -26,4 +26,25 @@ class Controller extends CController
 		parent::__construct($id, $module);
 		Yii::app()->clientScript->registerCoreScript("jquery");
 	}
+
+	public function filters()
+	{
+		return array(
+			'accessManager',
+		);
+	}
+
+	public function filterAccessManager($filterChain)
+	{
+		$app = Yii::app();
+		$user = $app->getUser();
+
+		if($user->checkAccess($app->controller->route)) 
+			$filterChain->run();
+		else
+			if($user->getIsGuest())
+				$user->loginRequired();
+			else
+				throw new CHttpException(403, Yii::t('yii', 'You are not authorized to perform this action.'));
+	}
 }
