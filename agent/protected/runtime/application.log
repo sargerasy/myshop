@@ -3690,3 +3690,91 @@ in F:\xamp\xampp\htdocs\yii\framework\zii\widgets\grid\CGridView.php (277)
 in F:\xamp\xampp\htdocs\yii\framework\zii\widgets\grid\CGridView.php (479)
 in F:\xamp\xampp\htdocs\yii\framework\zii\widgets\grid\CDataColumn.php (135)
 in F:\xamp\xampp\htdocs\yii\framework\zii\widgets\grid\CGridColumn.php (135)
+2011/01/13 01:31:59 [trace] [system.CModule] Loading "log" application component
+in F:\xamp\xampp\htdocs\shop\agent\index.php (13)
+2011/01/13 01:31:59 [trace] [system.CModule] Loading "request" application component
+in F:\xamp\xampp\htdocs\shop\agent\index.php (13)
+2011/01/13 01:31:59 [trace] [system.CModule] Loading "urlManager" application component
+in F:\xamp\xampp\htdocs\shop\agent\index.php (13)
+2011/01/13 01:31:59 [trace] [system.CModule] Loading "clientScript" application component
+in F:\xamp\xampp\htdocs\shop\agent\protected\components\Controller.php (27)
+in F:\xamp\xampp\htdocs\shop\agent\index.php (13)
+2011/01/13 01:31:59 [trace] [system.web.filters.CFilterChain] Running filter AccessController.filteraccessManager()
+in F:\xamp\xampp\htdocs\shop\agent\index.php (13)
+2011/01/13 01:31:59 [trace] [system.CModule] Loading "user" application component
+in F:\xamp\xampp\htdocs\shop\agent\protected\components\Controller.php (40)
+in F:\xamp\xampp\htdocs\shop\agent\index.php (13)
+2011/01/13 01:31:59 [trace] [system.CModule] Loading "session" application component
+in F:\xamp\xampp\htdocs\shop\agent\protected\components\Controller.php (40)
+in F:\xamp\xampp\htdocs\shop\agent\index.php (13)
+2011/01/13 01:31:59 [trace] [system.CModule] Loading "authManager" application component
+in F:\xamp\xampp\htdocs\shop\agent\protected\components\Controller.php (42)
+in F:\xamp\xampp\htdocs\shop\agent\index.php (13)
+2011/01/13 01:31:59 [trace] [system.CModule] Loading "db" application component
+in F:\xamp\xampp\htdocs\shop\agent\protected\components\Controller.php (42)
+in F:\xamp\xampp\htdocs\shop\agent\index.php (13)
+2011/01/13 01:31:59 [trace] [system.db.CDbConnection] Opening DB connection
+in F:\xamp\xampp\htdocs\shop\agent\protected\components\Controller.php (42)
+in F:\xamp\xampp\htdocs\shop\agent\index.php (13)
+2011/01/13 01:31:59 [trace] [system.db.CDbCommand] Querying SQL: SELECT * FROM AuthAssignment WHERE userid=:userid
+in F:\xamp\xampp\htdocs\shop\agent\protected\components\Controller.php (42)
+in F:\xamp\xampp\htdocs\shop\agent\index.php (13)
+2011/01/13 01:31:59 [trace] [system.db.CDbCommand] Querying SQL: SELECT * FROM AuthItem WHERE name=:name
+in F:\xamp\xampp\htdocs\shop\agent\protected\components\Controller.php (42)
+in F:\xamp\xampp\htdocs\shop\agent\index.php (13)
+2011/01/13 01:31:59 [trace] [system.web.auth.CDbAuthManager] Checking permission "Access/Role"
+in F:\xamp\xampp\htdocs\shop\agent\protected\components\Controller.php (42)
+in F:\xamp\xampp\htdocs\shop\agent\index.php (13)
+2011/01/13 01:31:59 [trace] [system.db.CDbCommand] Querying SQL: SELECT parent FROM AuthItemChild WHERE child=:name
+in F:\xamp\xampp\htdocs\shop\agent\protected\components\Controller.php (42)
+in F:\xamp\xampp\htdocs\shop\agent\index.php (13)
+2011/01/13 01:31:59 [trace] [system.db.CDbCommand] Querying SQL: SELECT * FROM AuthItem WHERE name=:name
+in F:\xamp\xampp\htdocs\shop\agent\protected\components\Controller.php (42)
+in F:\xamp\xampp\htdocs\shop\agent\index.php (13)
+2011/01/13 01:31:59 [trace] [system.web.auth.CDbAuthManager] Checking permission "admin"
+in F:\xamp\xampp\htdocs\shop\agent\protected\components\Controller.php (42)
+in F:\xamp\xampp\htdocs\shop\agent\index.php (13)
+2011/01/13 01:31:59 [trace] [system.db.CDbCommand] Querying SQL: SHOW COLUMNS FROM `authitem`
+in F:\xamp\xampp\htdocs\shop\agent\protected\controllers\AccessController.php (70)
+in F:\xamp\xampp\htdocs\shop\agent\protected\components\Controller.php (43)
+in F:\xamp\xampp\htdocs\shop\agent\index.php (13)
+2011/01/13 01:31:59 [trace] [system.db.CDbCommand] Querying SQL: SHOW CREATE TABLE `authitem`
+in F:\xamp\xampp\htdocs\shop\agent\protected\controllers\AccessController.php (70)
+in F:\xamp\xampp\htdocs\shop\agent\protected\components\Controller.php (43)
+in F:\xamp\xampp\htdocs\shop\agent\index.php (13)
+2011/01/13 01:31:59 [trace] [system.CModule] Loading "messages" application component
+in F:\xamp\xampp\htdocs\shop\agent\protected\helpers\utils.php (48)
+in F:\xamp\xampp\htdocs\shop\agent\protected\views\access\role.php (3)
+in F:\xamp\xampp\htdocs\shop\agent\protected\controllers\AccessController.php (74)
+2011/01/13 01:31:59 [trace] [system.CModule] Loading "widgetFactory" application component
+in F:\xamp\xampp\htdocs\shop\agent\protected\views\access\role.php (24)
+in F:\xamp\xampp\htdocs\shop\agent\protected\controllers\AccessController.php (74)
+in F:\xamp\xampp\htdocs\shop\agent\protected\components\Controller.php (43)
+2011/01/13 01:31:59 [trace] [system.db.ar.CActiveRecord] Authitem.count()
+in F:\xamp\xampp\htdocs\yii\framework\zii\widgets\CBaseListView.php (105)
+in F:\xamp\xampp\htdocs\yii\framework\zii\widgets\grid\CGridView.php (220)
+in F:\xamp\xampp\htdocs\shop\agent\protected\views\access\role.php (24)
+2011/01/13 01:31:59 [trace] [system.db.CDbCommand] Querying SQL: SELECT COUNT(*) FROM `authitem` `t` WHERE type=:ycp0
+in F:\xamp\xampp\htdocs\yii\framework\zii\widgets\CBaseListView.php (105)
+in F:\xamp\xampp\htdocs\yii\framework\zii\widgets\grid\CGridView.php (220)
+in F:\xamp\xampp\htdocs\shop\agent\protected\views\access\role.php (24)
+2011/01/13 01:31:59 [trace] [system.db.ar.CActiveRecord] Authitem.findAll()
+in F:\xamp\xampp\htdocs\yii\framework\zii\widgets\CBaseListView.php (105)
+in F:\xamp\xampp\htdocs\yii\framework\zii\widgets\grid\CGridView.php (220)
+in F:\xamp\xampp\htdocs\shop\agent\protected\views\access\role.php (24)
+2011/01/13 01:31:59 [trace] [system.db.CDbCommand] Querying SQL: SELECT * FROM `authitem` `t` WHERE type=:ycp0 LIMIT 10
+in F:\xamp\xampp\htdocs\yii\framework\zii\widgets\CBaseListView.php (105)
+in F:\xamp\xampp\htdocs\yii\framework\zii\widgets\grid\CGridView.php (220)
+in F:\xamp\xampp\htdocs\shop\agent\protected\views\access\role.php (24)
+2011/01/13 01:31:59 [trace] [system.CModule] Loading "assetManager" application component
+in F:\xamp\xampp\htdocs\yii\framework\zii\widgets\grid\CGridView.php (226)
+in F:\xamp\xampp\htdocs\shop\agent\protected\views\access\role.php (24)
+in F:\xamp\xampp\htdocs\shop\agent\protected\controllers\AccessController.php (74)
+2011/01/13 01:31:59 [trace] [system.CModule] Loading "coreMessages" application component
+in F:\xamp\xampp\htdocs\yii\framework\zii\widgets\grid\CButtonColumn.php (170)
+in F:\xamp\xampp\htdocs\yii\framework\zii\widgets\grid\CButtonColumn.php (146)
+in F:\xamp\xampp\htdocs\yii\framework\zii\widgets\grid\CGridView.php (277)
+2011/01/13 01:31:59 [trace] [system.CModule] Loading "format" application component
+in F:\xamp\xampp\htdocs\yii\framework\zii\widgets\grid\CGridView.php (479)
+in F:\xamp\xampp\htdocs\yii\framework\zii\widgets\grid\CDataColumn.php (135)
+in F:\xamp\xampp\htdocs\yii\framework\zii\widgets\grid\CGridColumn.php (135)
