@@ -61,5 +61,14 @@ return array (
  'Select ALL'=>'全部选择',
  'Operation Successful'=>'操作成功',
  'Update Role'=>'修改角色',
+ 'List Wholesales'=>'批发方案列表',
+ 'Add Wholesale'=>'新增批发方案',
+ 'Create Wholesale'=>'新增批发方案',
+ 'Update Wholesale'=>'修改批发方案',
+ 'All Categories'=>'所有种类',
+ 'All Brands'=>'所有品牌',
+ "Search For"=>'搜索',
+ "Goods No., Goods Name, Goods SN"=>'商品编号，名称或货号',
 );
+
 

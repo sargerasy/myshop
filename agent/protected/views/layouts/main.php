@@ -37,7 +37,7 @@
 			'items'=>array(
 				array('label'=>Utils::t('Home'), 'url'=>array('/site/index')),
 				array('label'=>Utils::t('Access'), 'url'=>array('/user/list')),
-				array('label'=>Utils::t('DRP'), 'url'=>array('drp/wholesale')),
+				array('label'=>Utils::t('DRP'), 'url'=>array('wholesale/list')),
 				array('label'=>Utils::t('Login'), 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
 				array('label'=>Utils::t('Logout') . '('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
 			),

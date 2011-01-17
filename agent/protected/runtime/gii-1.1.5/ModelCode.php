@@ -1,7 +1,7 @@
 <?php
 return array (
   'template' => 'default',
-  'tablePrefix' => '',
+  'tablePrefix' => 'ecs_',
   'modelPath' => 'application.models',
   'baseClass' => 'CActiveRecord',
 );
