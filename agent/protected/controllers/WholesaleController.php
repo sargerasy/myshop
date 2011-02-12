@@ -15,17 +15,8 @@ class WholesaleController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new Wholesale;
-
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['Wholesale']))
-		{
-			$model->attributes=$_POST['Wholesale'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
-		}
 
 		$categories = Utils::getModelTree(Category::model()->findAll(), 'cat_id', 'parent_id');
 		$brands = Brand::model()->findAll();
@@ -103,17 +94,78 @@ class WholesaleController extends Controller
 	public function actionSearch()
 	{
 		$criteria = new CDbCriteria;
-		if(isset($_POST['cat_id']))
-			echo HI;
-			$criteria.compare('cat_id', $_POST['cat_id']);
-		if(isset($_POST['brand_id']))
-			$criteria.compare('brand_id', $_POST['brand_id']);
+		if(isset($_POST['cat_id'])) {
+			$cat_id = intval($_POST['cat_id']);
+			if($cat_id > 0)
+				$criteria->compare('cat_id', $cat_id);
+		}
+		if(isset($_POST['brand_id'])) {
+			$brand_id = intval($_POST['brand_id']);
+			if($brand_id > 0)
+				$criteria->compare('brand_id', $brand_id);
+		}
 		if(isset($_POST['keyword']))
-			$criteria.addSearchCondition('goods_name', $_POST['keyword']);
+			$criteria->addSearchCondition('goods_name', $_POST['keyword']);
 
 		$data = Goods::model()->findAll($criteria);
-		foreach($data as $item) {
-			echo CHtml::tag('option', array('value'=>$item['goods_id']), $item['goods_name'], true);
+		if(sizeof($data) == 0) {
+			echo CHtml::tag('option', array('value'=>-1), Utils::t('No Goods Matched'), true);
+		} else 
+			foreach($data as $item) {
+				echo CHtml::tag('option', array('value'=>$item['goods_id']), $item['goods_name'], true);
+			}
+	}
+
+	public function actionUpdateWholesale()
+	{
+		if(isset($_POST['id']) && isset($_POST['name']) && isset($_POST['desc']) && isset($_POST['enable'])) {
+			$model=$this->loadModel($_POST['id']);
+			$model->name = $_POST['name'];
+			$model->desc = $_POST['desc'];
+			$model->enable = $_POST['enable'] === 'true' ? 1 : 0;
+			if($model->save())
+				echo Utils::t('Update Success');
+			else
+				echo CHtml::errorSummary($model);
+		} else {
+			echo Utils::t('Update Failed');
+		}
+	}
+
+	public function actionSave()
+	{
+		if(isset($_POST['goods_id'])) {
+			$goods_id = $_POST['goods_id'];
+			$goods = Goods::model()->findByPk(intval($goods_id));
+			$wholesale = new Wholesale;
+			$wholesale->goods_id = $goods_id;
+			$wholesale->desc = $_POST['desc'];
+			$wholesale->name = $goods->goods_name;
+			$wholesale->enable = 1;
+			if($wholesale->save()) {
+				$success = true;
+				if(isset($_POST['quantity']) && isset($_POST['price']) && isset($_POST['commision'])) {
+					$quantities = $_POST['quantity'];
+					$prices = $_POST['price'];
+					$commisions = $_POST['commision'];
+					$len = sizeof($quantities);
+					for($i = 0; $i < $len; $i++) {
+						$price_strategy = new PriceStrategy;
+						$price_strategy->wholesale_id = $wholesale->id;
+						$price_strategy->quantity = $quantities[$i];
+						$price_strategy->price= $prices[$i];
+						$price_strategy->commision = $commisions[$i];
+						if(!$price_strategy->save()) {
+							echo CHtml::errorSummary($price_strategy);
+							$success = false;
+						}
+					}
+				}
+				if($success)
+					$this->redirect(array('wholesale/list'));
+			} else {
+				echo CHtml::errorSummary($wholesale);
+			}
 		}
 	}
 

@@ -54,7 +54,7 @@ class Wholesale extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'price_strategies'=>array(self::HAS_MANY, 'PriceStrategy', 'wholesale_id'),
+			'price_strategies'=>array(self::HAS_MANY, 'PriceStrategy', 'wholesale_id', 'order'=>'quantity'),
 			'goods'=>array(self::BELONGS_TO, 'Goods', 'goods_id'),
 		);
 	}
@@ -93,5 +93,19 @@ class Wholesale extends CActiveRecord
 		return new CActiveDataProvider(get_class($this), array(
 			'criteria'=>$criteria,
 		));
+	}
+
+	public function findPrice($count)
+	{
+		$ps = $this->price_strategies;
+		$price = 0;
+		foreach($ps as $e) {
+			if($count >= $e->quantity) {
+				$price = $e->price;
+			}
+			else
+				break;
+		}
+		return $price;
 	}
 }

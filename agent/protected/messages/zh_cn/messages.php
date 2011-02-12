@@ -67,8 +67,20 @@ return array (
  'Update Wholesale'=>'修改批发方案',
  'All Categories'=>'所有种类',
  'All Brands'=>'所有品牌',
- "Search For"=>'搜索',
- "Goods No., Goods Name, Goods SN"=>'商品编号，名称或货号',
+ 'Search For'=>'搜索',
+ 'Search'=>'搜索',
+ 'Goods No., Goods Name, Goods SN'=>'商品编号，名称或货号',
+ 'Goods Name'=>'商品名称',
+ 'Search Goods First'=>'请先搜索商品',
+ 'No Goods Matched'=>'没有找到商品',
+ 'quantity'=>'数量',
+ 'price'=>'价格',
+ 'commision'=>'提成',
+ 'Description'=>'简介',
+ 'Enable'=>'生效',
+ 'Wholesale Name'=>'批发方案名称',
+ 'Wholesale Remark'=>'请输入您的联系方式、付款方式和配送方式等信息',
+ 'Wholesale Goods Cart'=>'批发商品购物车',
 );
 
 

@@ -41,8 +41,8 @@ class PriceStrategy extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('quantity, price, commision, wholesale_id', 'required'),
-			array('quantity, wholesale_id', 'numerical', 'integerOnly'=>true),
-			array('price, commision', 'numerical'),
+			array('wholesale_id', 'numerical', 'integerOnly'=>true),
+			array('quantity, price, commision', 'numerical'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, quantity, price, commision, wholesale_id', 'safe', 'on'=>'search'),
