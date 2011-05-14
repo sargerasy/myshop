@@ -16,5 +16,11 @@
 <?php if ($this->_var['show_transform_points']): ?>
 <a href="user.php?act=transform_points"<?php if ($this->_var['action'] == 'transform_points'): ?>class="curs"<?php endif; ?>><img src="themes/default/images/u14.gif"> <?php echo $this->_var['lang']['label_transform_points']; ?></a>
 <?php endif; ?>
+<?php if ($this->_var['is_agent']): ?>
+<a href="user.php?act=agent"<?php if ($this->_var['action'] == 'agent'): ?>class="curs"<?php endif; ?>><img src="themes/default/images/u2.gif"> <?php echo $this->_var['lang']['label_agent_area']; ?></a>
+<?php endif; ?>
+<?php if ($this->_var['is_distributor']): ?>
+<a href="user.php?act=distributor"<?php if ($this->_var['action'] == 'distributor'): ?>class="curs"<?php endif; ?>><img src="themes/default/images/u2.gif"> <?php echo $this->_var['lang']['label_distributor_area']; ?></a>
+<?php endif; ?>
 <a href="user.php?act=logout" style="background:none; text-align:right; margin-right:10px;"><img src="themes/default/images/bnt_sign.gif"></a>
 </div>

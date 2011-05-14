@@ -130,6 +130,7 @@
     </form>
      <?php endif; ?>
      
+
      <?php if ($this->_var['action'] == 'bonus'): ?>
       <script type="text/javascript">
         <?php $_from = $this->_var['lang']['profile_js']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }; $this->push_vars('key', 'item');if (count($_from)):
@@ -1110,7 +1111,17 @@
        <?php endif; ?>
         <?php endif; ?>
         
-
+        
+		<?php if ($this->_var['action'] == 'agent'): ?>
+		  <h5><span><?php echo $this->_var['lang']['referee_distributor_info']; ?></span></h5>
+		  <h5><span><?php echo $this->_var['lang']['referee_agent_info']; ?></span></h5>
+		<?php endif; ?>
+        
+        
+		<?php if ($this->_var['action'] == 'distributor'): ?>
+		  <h5><span><?php echo $this->_var['lang']['order_info']; ?></span></h5>
+		<?php endif; ?>
+        
 
 
 

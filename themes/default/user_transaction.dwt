@@ -125,6 +125,7 @@
     </form>
      <!--{/if}-->
      <!--#用户信息界面 end-->
+
      <!-- {if $action eq 'bonus'} 用户的红包列表 start-->
       <script type="text/javascript">
         {foreach from=$lang.profile_js item=item key=key}
@@ -1053,7 +1054,17 @@
        <!--{/if}-->
         <!--{/if} -->
         <!--#积分兑换 -->
-
+        <!--#业务经理专区 start-->
+		<!-- {if $action eq 'agent'} -->
+		  <h5><span>{$lang.referee_distributor_info}</span></h5>
+		  <h5><span>{$lang.referee_agent_info}</span></h5>
+		<!-- {/if} -->
+        <!--#业务经理专区 end-->
+        <!--#经销商专区 start-->
+		<!-- {if $action eq 'distributor'} -->
+		  <h5><span>{$lang.order_info}</span></h5>
+		<!-- {/if} -->
+        <!--#经销商专区 end-->
 
 
 

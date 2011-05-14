@@ -81,6 +81,7 @@ return array (
  'Wholesale Name'=>'批发方案名称',
  'Wholesale Remark'=>'请输入您的联系方式、付款方式和配送方式等信息',
  'Wholesale Goods Cart'=>'批发商品购物车',
+ 'drop'=>'删除',
 );
 
 

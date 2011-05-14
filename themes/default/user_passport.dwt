@@ -94,7 +94,14 @@
     {insert_scripts files='utils.js'}
 <div class="usBox">
   <div class="usBox_2 clearfix">
-   <div class="regtitle"></div>
+	  <div class="regtitle">
+		  <!-- {if $type eq 'agent'} -->
+		  <span style="padding-left:150px; line-height: 30px; font-weight: bold; font-size: 14px;">{$lang.agent}</span>
+		  <!-- {/if} -->
+		  <!-- {if $type eq 'distributor'} -->
+		  <span style="padding-left:150px; line-height: 30px; font-weight: bold; font-size: 14px;">{$lang.distributor}</span>
+		  <!-- {/if} -->
+	  </div>
     <form action="user.php" method="post" name="formUser" onsubmit="return register();">
       <table width="100%"  border="0" align="left" cellpadding="5" cellspacing="3">
         <tr>
@@ -156,9 +163,10 @@
         </tr>
 	<!-- {else} -->
         <tr>
-          <td align="right" <!-- {if $field.is_need} -->id="extend_field{$field.id}i"<!--{/if}-->>{$field.reg_field_name}
+          <td align="right" <!-- {if $field.is_need || (($type eq 'agent' || $type eq 'distributor') && ($field.reg_field_name eq $lang.label_phone || $field.reg_field_name eq $lang.label_referee))} -->id="extend_field{$field.id}i"<!--{/if}-->>{$field.reg_field_name}
           <td>
-          <input name="extend_field{$field.id}" type="text" size="25" class="inputBg" /><!-- {if $field.is_need} --><span style="color:#FF0000"> *</span><!-- {/if} -->
+			  <input name="extend_field{$field.id}" type="text" size="25" <!-- {if $field.reg_field_name eq $lang.label_referee} -->disabled="true" value="{$referee.user_name}"<!-- {/if} --> class="inputBg" /><!-- {if $field.is_need || (($type eq 'agent' || $type eq 'distributor') && ($field.reg_field_name eq $lang.label_phone || $field.reg_field_name eq $lang.label_referee))} --><span style="color:#FF0000"> *</span><!-- {/if} -->
+			  <input name="referee" type="hidden" value="{$referee.user_id}"/>
           </td>
         </tr>
 	<!-- {/if} -->
@@ -195,6 +203,7 @@
           </td>
         </tr>
       </table>
+	  <input type="hidden" name="type" value="{$type}"/>
     </form>
   </div>
 </div>

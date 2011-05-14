@@ -17,5 +17,11 @@
 <!--{if $show_transform_points}-->
 <a href="user.php?act=transform_points"{if $action eq 'transform_points'}class="curs"{/if}><img src="../images/u14.gif"> {$lang.label_transform_points}</a>
 <!--{/if}-->
+<!--{if $is_agent}-->
+<a href="user.php?act=agent"{if $action eq 'agent'}class="curs"{/if}><img src="../images/u2.gif"> {$lang.label_agent_area}</a>
+<!--{/if}-->
+<!--{if $is_distributor}-->
+<a href="user.php?act=distributor"{if $action eq 'distributor'}class="curs"{/if}><img src="../images/u2.gif"> {$lang.label_distributor_area}</a>
+<!--{/if}-->
 <a href="user.php?act=logout" style="background:none; text-align:right; margin-right:10px;"><img src="../images/bnt_sign.gif"></a>
 </div>

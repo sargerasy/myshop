@@ -14,6 +14,13 @@
 			e.preventDefault();
 			return false;
 		});
+		$(".drop").click(function(e) {
+			var t = $(this);
+			var line = t.parents(".cart-line");
+			dropFromCartRequest(line, t.attr("href"));
+			e.preventDefault();
+			return false;
+		});
 	});
 
 	function addToCartRequest(line) {
@@ -33,13 +40,44 @@
 
 	function addToCart(cart) {
 		var table = $("#ws-cart");
-		table.append("<tr><td>" + cart.goods_name + "</td><td>" + 
-				cart.count + "</td><td>" +
-				cart.price + "</td><td>" +
-				cart.price * cart.count + "</td><td>" +
-				"drop</td>" + "</tr>");
+		var line = [
+			createATag(cart.goods_url, cart.goods_name), 
+			cart.count, 
+			cart.price, 
+			cart.price*cart.count, 
+			createATag(cart.drop_url, cart.drop_label, "drop")
+		];
+		table.append(addLineToTable(line));
+		table.find("tr:last-child").find(".drop").click(function(e) {
+			var t = $(this);
+			var line = t.parents(".cart-line");
+			dropFromCartRequest(line, t.attr("href"));
+			e.preventDefault();
+			return false;
+		});
 	}
 
-	function delFromCart() {
+	function dropFromCartRequest(line, url) {
+		$.ajax({
+			'url': url,
+			type: 'POST',
+			success: function() {
+				line.remove();
+			}
+		});
 	}
+
+	function createATag(url, label, clazz) {
+		return '<a href="' + url + '" class="' + clazz + '">' + label + '</a>';
+	}
+
+	function addLineToTable(line) {
+		var tr = '<tr class="cart-line">';
+		$.each(line, function(i, v) {
+			tr += "<td>" + v + "</td>";
+		});
+		tr += "</tr>";
+		return tr;
+	}
+
 })(jQuery));

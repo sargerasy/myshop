@@ -95,7 +95,14 @@
     <?php echo $this->smarty_insert_scripts(array('files'=>'utils.js')); ?>
 <div class="usBox">
   <div class="usBox_2 clearfix">
-   <div class="regtitle"></div>
+	  <div class="regtitle">
+		  <?php if ($this->_var['type'] == 'agent'): ?>
+		  <span style="padding-left:150px; line-height: 30px; font-weight: bold; font-size: 14px;"><?php echo $this->_var['lang']['agent']; ?></span>
+		  <?php endif; ?>
+		  <?php if ($this->_var['type'] == 'distributor'): ?>
+		  <span style="padding-left:150px; line-height: 30px; font-weight: bold; font-size: 14px;"><?php echo $this->_var['lang']['distributor']; ?></span>
+		  <?php endif; ?>
+	  </div>
     <form action="user.php" method="post" name="formUser" onsubmit="return register();">
       <table width="100%"  border="0" align="left" cellpadding="5" cellspacing="3">
         <tr>
@@ -159,9 +166,10 @@
         </tr>
 	<?php else: ?>
         <tr>
-          <td align="right" <?php if ($this->_var['field']['is_need']): ?>id="extend_field<?php echo $this->_var['field']['id']; ?>i"<?php endif; ?>><?php echo $this->_var['field']['reg_field_name']; ?>
+          <td align="right" <?php if ($this->_var['field']['is_need'] || ( ( $this->_var['type'] == 'agent' || $this->_var['type'] == 'distributor' ) && ( $this->_var['field']['reg_field_name'] == $this->_var['lang']['label_phone'] || $this->_var['field']['reg_field_name'] == $this->_var['lang']['label_referee'] ) )): ?>id="extend_field<?php echo $this->_var['field']['id']; ?>i"<?php endif; ?>><?php echo $this->_var['field']['reg_field_name']; ?>
           <td>
-          <input name="extend_field<?php echo $this->_var['field']['id']; ?>" type="text" size="25" class="inputBg" /><?php if ($this->_var['field']['is_need']): ?><span style="color:#FF0000"> *</span><?php endif; ?>
+			  <input name="extend_field<?php echo $this->_var['field']['id']; ?>" type="text" size="25" <?php if ($this->_var['field']['reg_field_name'] == $this->_var['lang']['label_referee']): ?>disabled="true" value="<?php echo $this->_var['referee']['user_name']; ?>"<?php endif; ?> class="inputBg" /><?php if ($this->_var['field']['is_need'] || ( ( $this->_var['type'] == 'agent' || $this->_var['type'] == 'distributor' ) && ( $this->_var['field']['reg_field_name'] == $this->_var['lang']['label_phone'] || $this->_var['field']['reg_field_name'] == $this->_var['lang']['label_referee'] ) )): ?><span style="color:#FF0000"> *</span><?php endif; ?>
+			  <input name="referee" type="hidden" value="<?php echo $this->_var['referee']['user_id']; ?>"/>
           </td>
         </tr>
 	<?php endif; ?>
@@ -198,6 +206,7 @@
           </td>
         </tr>
       </table>
+	  <input type="hidden" name="type" value="<?php echo $this->_var['type']; ?>"/>
     </form>
   </div>
 </div>

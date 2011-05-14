@@ -725,4 +725,16 @@ $_LANG['label_collection'] = '我的收藏';
 $_LANG['article_list'] = '文章列表';
 $_LANG['preferences_price'] = '优惠价格';
 $_LANG['divided_into'] = '分成规则';
+
+/* 我加的 */
+$_LANG['agent'] = '业务经理';
+$_LANG['distributor'] = '经销商';
+$_LANG['label_phone'] = '手机';
+$_LANG['label_referee'] = '介绍人';
+$_LANG['invalid_referee'] = '必须有介绍人';
+$_LANG['invalid_referee_type'] = '介绍人必须为业务经理';
+$_LANG['referee_distributor_info'] = '经销商信息';
+$_LANG['referee_agent_info'] = '业务经理信息';
+$_LANG['order_info'] = '订单信息';
+$_LANG['no_permission'] = '无此权限';
 ?>

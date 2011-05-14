@@ -1764,6 +1764,28 @@ function get_affiliate()
 }
 
 /**
+ * 获取推荐人信息
+ **/
+function get_affiliate_info()
+{
+    if (!empty($_COOKIE['ecshop_affiliate_uid']))
+    {
+        $uid = intval($_COOKIE['ecshop_affiliate_uid']);
+        $row = $GLOBALS['db']->getRow('SELECT user_id, user_name, rank_name FROM ' . $GLOBALS['ecs']->table('users'). 'as u LEFT JOIN '. $GLOBALS['ecs']->table('user_rank') . "as u1 on u.user_rank=u1.rank_id WHERE user_id = '$uid'");
+        if ($row)
+        {
+            return $row;
+        }
+        else
+        {
+            setcookie('ecshop_affiliate_uid', '', 1);
+        }
+    }
+
+    return 0;
+}
+
+/**
  * 获得指定分类同级的所有分类以及该分类下的子分类
  *
  * @access  public

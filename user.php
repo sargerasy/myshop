@@ -16,12 +16,14 @@
 define('IN_ECS', true);
 
 require(dirname(__FILE__) . '/includes/init.php');
+include_once(ROOT_PATH .'includes/lib_clips.php');
 
 /* 载入语言文件 */
 require_once(ROOT_PATH . 'languages/' .$_CFG['lang']. '/user.php');
 
 $user_id = $_SESSION['user_id'];
 $action  = isset($_REQUEST['act']) ? trim($_REQUEST['act']) : 'default';
+$rank = get_rank_info();
 
 $affiliate = unserialize($GLOBALS['_CFG']['affiliate']);
 $smarty->assign('affiliate', $affiliate);
@@ -33,7 +35,8 @@ array('login','act_login','register','act_register','act_edit_password','get_pas
 /* 显示页面的action列表 */
 $ui_arr = array('register', 'login', 'profile', 'order_list', 'order_detail', 'address_list', 'collection_list',
 'message_list', 'tag_list', 'get_password', 'reset_password', 'booking_list', 'add_booking', 'account_raply',
-'account_deposit', 'account_log', 'account_detail', 'act_account', 'pay', 'default', 'bonus', 'group_buy', 'group_buy_detail', 'affiliate', 'comment_list','validate_email','track_packages', 'transform_points','qpassword_name', 'get_passwd_question', 'check_answer');
+'account_deposit', 'account_log', 'account_detail', 'act_account', 'pay', 'default', 'bonus', 'group_buy', 'group_buy_detail', 'affiliate', 'comment_list','validate_email','track_packages', 'transform_points','qpassword_name', 'get_passwd_question', 'check_answer',
+'agent', 'distributor');
 
 /* 未登录处理 */
 if (empty($_SESSION['user_id']))
@@ -86,13 +89,15 @@ if (in_array($action, $ui_arr))
     $smarty->assign('data_dir',   DATA_DIR);   // 数据目录
     $smarty->assign('action',     $action);
     $smarty->assign('lang',       $_LANG);
+	$smarty->assign('rank_level', $rank['rank_name']);
+	$smarty->assign('is_agent',   $rank['rank_name']==$_LANG['agent']);
+	$smarty->assign('is_distributor',  $rank['rank_name']==$_LANG['distributor']);
 }
 
 //用户中心欢迎页
 if ($action == 'default')
 {
-    include_once(ROOT_PATH .'includes/lib_clips.php');
-    if ($rank = get_rank_info())
+    if ($rank)
     {
         $smarty->assign('rank_name', sprintf($_LANG['your_level'], $rank['rank_name']));
         if (!empty($rank['next_rank_name']))
@@ -114,6 +119,7 @@ if ($action == 'register')
         $back_act = strpos($GLOBALS['_SERVER']['HTTP_REFERER'], 'user.php') ? './index.php' : $GLOBALS['_SERVER']['HTTP_REFERER'];
     }
 
+	$type  = isset($_REQUEST['type']) ? trim($_REQUEST['type']) : 'default';
     /* 取出注册扩展字段 */
     $sql = 'SELECT * FROM ' . $ecs->table('reg_fields') . ' WHERE type < 2 AND display = 1 ORDER BY dis_order, id';
     $extend_info_list = $db->getAll($sql);
@@ -132,6 +138,10 @@ if ($action == 'register')
     /* 增加是否关闭注册 */
     $smarty->assign('shop_reg_closed', $_CFG['shop_reg_closed']);
 //    $smarty->assign('back_act', $back_act);
+	/* 注册类型 */
+	$smarty->assign('type', $type);
+	/* 介绍人信息 */
+	$smarty->assign('referee', get_affiliate_info());
     $smarty->display('user_passport.dwt');
 }
 
@@ -152,11 +162,13 @@ elseif ($action == 'act_register')
         $username = isset($_POST['username']) ? trim($_POST['username']) : '';
         $password = isset($_POST['password']) ? trim($_POST['password']) : '';
         $email    = isset($_POST['email']) ? trim($_POST['email']) : '';
+        $type    = isset($_POST['type']) ? trim($_POST['type']) : 'default';
         $other['msn'] = isset($_POST['extend_field1']) ? $_POST['extend_field1'] : '';
         $other['qq'] = isset($_POST['extend_field2']) ? $_POST['extend_field2'] : '';
         $other['office_phone'] = isset($_POST['extend_field3']) ? $_POST['extend_field3'] : '';
         $other['home_phone'] = isset($_POST['extend_field4']) ? $_POST['extend_field4'] : '';
         $other['mobile_phone'] = isset($_POST['extend_field5']) ? $_POST['extend_field5'] : '';
+		$other['referee'] = isset($_POST['referee']) ? $_POST['referee'] : '';
         $sel_question = empty($_POST['sel_question']) ? '' : $_POST['sel_question'];
         $passwd_answer = isset($_POST['passwd_answer']) ? trim($_POST['passwd_answer']) : '';
 
@@ -186,7 +198,7 @@ elseif ($action == 'act_register')
         {
             if (empty($_POST['captcha']))
             {
-                show_message($_LANG['invalid_captcha'], $_LANG['sign_up'], 'user.php?act=register', 'error');
+                show_message($_LANG['invalid_captcha'], $_LANG['sign_up'], 'user.php?act=register&type='.$type, 'error');
             }
 
             /* 检查验证码 */
@@ -195,9 +207,27 @@ elseif ($action == 'act_register')
             $validator = new captcha();
             if (!$validator->check_word($_POST['captcha']))
             {
-                show_message($_LANG['invalid_captcha'], $_LANG['sign_up'], 'user.php?act=register', 'error');
+                show_message($_LANG['invalid_captcha'], $_LANG['sign_up'], 'user.php?act=register&type='.$type, 'error');
             }
         }
+
+		/* 介绍人检查 经销商和业务经理必须有介绍人而且介绍人的rank必须为业务经理*/
+		if ($type == 'agent' || $type=='distributor') 
+		{
+			if (empty($other['referee'])) 
+			{
+				show_message($_LANG['invalid_referee'], $_LANG['sign_up'], 'user.php?act=register&type='.$type, 'error');
+			}
+
+			$affiliate = get_affiliate_info();
+			if ($affiliate['rank_name'] !=$_LANG['agent'])
+			{
+				show_message($_LANG['invalid_referee_type'], $_LANG['sign_up'], 'user.php?act=register&type='.$type, 'error');
+			}
+		}
+		if ($type == 'agent') $rank_id = 4;
+		else if ($type == 'distributor') $rank_id = 5;
+		else $rank_id = 0;
 
         if (register($username, $password, $email, $other) !== false)
         {
@@ -231,6 +261,8 @@ elseif ($action == 'act_register')
             }
 
             $ucdata = empty($user->ucdata)? "" : $user->ucdata;
+			/* 写入把业务经理和经销商的user_rank */
+			$db->query('UPDATE '. $ecs->table('users') . " SET `user_rank`='$rank_id' WHERE `user_id`='" . $_SESSION['user_id'] . "'");
             show_message(sprintf($_LANG['register_success'], $username . $ucdata), array($_LANG['back_up_page'], $_LANG['profile_lnk']), array($back_act, 'user.php'), 'info');
         }
         else
@@ -2743,5 +2775,21 @@ elseif ($action == 'act_transform_ucenter_points')
 elseif ($action == 'clear_history')
 {
     setcookie('ECS[history]',   '', 1);
+}
+/* 业务经理专区 */
+elseif ($action == 'agent')
+{
+	if ($rank['rank_name'] != $_LANG['agent']){
+		show_message($_LANG['no_permission']);
+	}
+    $smarty->display('user_transaction.dwt');
+}
+/* 经销商专区 */
+elseif ($action == 'distributor') 
+{
+	if ($rank['rank_name'] != $_LANG['distributor']){
+		show_message($_LANG['no_permission']);
+	}
+    $smarty->display('user_transaction.dwt');
 }
 ?>

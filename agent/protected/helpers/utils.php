@@ -88,4 +88,29 @@ class Utils
 	{
 		return Yii::t('messages', $msg, $params);
 	}
+
+	public static function addWholesaleCart($cart)
+	{
+		if(!isset($_SESSION['ws_cart_max_key'])) {
+			$_SESSION['ws_cart_max_key'] = 0;
+			$_SESSION['ws_cart'] = array();
+		}
+		$_SESSION['ws_cart_max_key'] += 1;
+		$key = strval($_SESSION['ws_cart_max_key']);
+		$cart['key'] = $key;
+		$_SESSION['ws_cart'][$key] = $cart;
+		return $_SESSION['ws_cart_max_key'];
+	}
+
+	public static function dropWholesaleCart($key)
+	{
+		unset($_SESSION['ws_cart'][$key]);
+	}
+
+	public static function getWholesaleCarts()
+	{
+		if(isset($_SESSION['ws_cart']))
+			return $_SESSION['ws_cart'];
+		return array();
+	}
 }

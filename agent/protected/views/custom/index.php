@@ -8,21 +8,22 @@ $this->breadcrumbs=array(
 	<div class="blank"></div>
 		<table id='ws-cart' width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
 			<tr>
-				<th bgcolor="#ffffff"><?php echo Utils::t("Goods Name"); ?></th>
-				<th bgcolor="#ffffff"><?php echo Utils::t("Count"); ?></th>
-				<th bgcolor="#ffffff"><?php echo Utils::t("Wholesale Price"); ?></th>
-				<th bgcolor="#ffffff"><?php echo Utils::t("Wholesale Total"); ?></th>
-				<th bgcolor="#ffffff"><?php echo Utils::t("Operation"); ?></th>
+				<th><?php echo Utils::t("Goods Name"); ?></th>
+				<th><?php echo Utils::t("Count"); ?></th>
+				<th><?php echo Utils::t("Wholesale Price"); ?></th>
+				<th><?php echo Utils::t("Wholesale Total"); ?></th>
+				<th><?php echo Utils::t("Operation"); ?></th>
 			</tr>
 			<!-- {foreach from=$cart_goods key=key item=goods} 循环批发商品开始 -->
-			<tr>
-				<td bgcolor="#ffffff" align="center"><a href="{$goods.goods_url}" target="_blank" class="f6">{$goods.goods_name}</a></td>
-				<td bgcolor="#ffffff" align="center">{$goods.goods_number}</td>
-				<td bgcolor="#ffffff" align="center">{$goods.formated_goods_price}</td>
-				<td bgcolor="#ffffff" align="center">{$goods.formated_subtotal}</td>
-				<td bgcolor="#ffffff" align="center"><a href="wholesale.php?act=drop_goods&key={$key}" class="f6">{$lang.drop}</a></td>
+			<?php foreach($carts as $cart) {?>
+			<tr class="cart-line">
+				<td><a href="<?php echo '../goods.php?id='.$cart['goods_id'] ?>" target="_blank" class="f6"><?php echo $cart['goods_name'] ?></a></td>
+				<td><?php echo $cart['count'] ?></td>
+				<td><?php echo $cart['price'] ?></td>
+				<td><?php echo $cart['count'] * $cart['price']  ?></td>
+				<td><a class="drop" href="<?php echo Yii::app()->createUrl('custom/dropCart', array('key'=>$cart['key'])) ?>"><?php echo $cart['drop_label'] ?></a></td>
 			</tr>
-			<!--{/foreach}-->
+			<?php } ?>
 		</table>
 		<form method="post" action="wholesale.php?act=submit_order">
 			<table border="0" cellpadding="5" cellspacing="1" width="100%">
@@ -51,7 +52,6 @@ $this->breadcrumbs=array(
 	<!-- {foreach from=$wholesale_list item=wholesale} 循环批发商品开始 -->
 	<?php foreach($models as $model) { ?>
 	<tr class="ws-line">
-		<input type="hidden" name="goods_id" value="<?php echo $model->goods_id ?>"/>
 		<input type="hidden" name="ws_id" value="<?php echo $model->id ?>"/>
 		<td bgcolor="#ffffff"><?php echo $model->name ?></td>
 		<td bgcolor="#ffffff">

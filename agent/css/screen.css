@@ -271,3 +271,7 @@ hr.space {background:#fff;color:#fff;visibility:hidden;}
 .list-div .first-cell{
 	font-weight: bold;
 }
+#ws-cart td, #ws-cart th{
+	background-color: #FFFFFF;
+	text-align: center;
+}

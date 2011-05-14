@@ -6,28 +6,41 @@ class CustomController extends Controller
 	{
 		Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl."/js/wholesale.js");
 		$models = Wholesale::model()->findAll();
+		
 		$this->render('index', array(
 			'models' => $models,
+			'carts' => Utils::getWholesaleCarts(),
 		));
 	}
 
 	public function actionAdd2cart() 
 	{
-		if(isset($_POST['count']) && isset($_POST['goods_id']) && isset($_POST['ws_id'])) {
+		if(isset($_POST['count']) && isset($_POST['ws_id'])) {
 			$count = intval($_POST['count']);
-			$goods_id = $_POST['goods_id'];
 			$ws_id = $_POST['ws_id'];
 			$ws = Wholesale::model()->findByPk($ws_id);
-			if(!$ws) {
+			if($count <= 0)
+				throw new CHttpException(400, 'Count Must larger than 0');
+			if(!$ws) 
 				throw new CHttpException(400,'Can not find the Wholesale');
-			}
 			$price = $ws->findPrice($count);
-			echo CJSON::encode(array(
+			$cart = array(
 				'count'=>$count,
 				'price'=>(float)$price,
 				'goods_name'=>$ws->goods->goods_name,
-			));
+				'drop_label'=>Utils::t("drop"),
+			);
+			$key = Utils::addWholesaleCart($cart);
+			$cart['drop_url'] = $this->createUrl('custom/dropCart', array('key'=>$key));
+			$cart['goods_url'] = "../goods.php?id=".$ws->goods_id;
+			echo CJSON::encode($cart);
 		}
+	}
+
+	public function actionDropCart($key)
+	{
+		Utils::dropWholesaleCart($key);
+		echo "Success";
 	}
 
 	// Uncomment the following methods and override them if needed

@@ -36,6 +36,8 @@ $_LANG['label_booking'] = '缺货登记';
 $_LANG['label_user_surplus'] = '资金管理';
 $_LANG['label_track_packages'] = '跟踪包裹';
 $_LANG['label_transform_points'] = '积分兑换';
+$_LANG['label_agent_area'] = '业务经理专区';
+$_LANG['label_distributor_area'] = '经销商专区';
 $_LANG['label_logout'] = '退出';
 
 /* 会员余额(预付款) */
