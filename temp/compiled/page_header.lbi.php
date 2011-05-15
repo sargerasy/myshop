@@ -21,10 +21,13 @@ if ($this->_foreach['nav_top_list']['total'] > 0):
     foreach ($_from AS $this->_var['nav']):
         $this->_foreach['nav_top_list']['iteration']++;
 ?>
+			<?php if ($this->_var['nav']['name'] == $this->_var['lang']['wholesale'] && ! $this->_var['is_distributor']): ?>
+			<?php else: ?>
             <a href="<?php echo $this->_var['nav']['url']; ?>" <?php if ($this->_var['nav']['opennew'] == 1): ?> target="_blank" <?php endif; ?>><?php echo $this->_var['nav']['name']; ?></a>
             <?php if (! ($this->_foreach['nav_top_list']['iteration'] == $this->_foreach['nav_top_list']['total'])): ?>
              |
             <?php endif; ?>
+			<?php endif; ?>
     <?php endforeach; endif; unset($_from); ?><?php $this->pop_vars();; ?>
     <div class="topNavR"></div>
    </li>
@@ -83,3 +86,4 @@ if ($this->_foreach['nav_middle_list']['total'] > 0):
    <a href="search.php?act=advanced_search"><?php echo $this->_var['lang']['advanced_search']; ?></a>
    </form>
 </div>
+

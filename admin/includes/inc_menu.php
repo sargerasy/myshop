@@ -143,6 +143,7 @@ $modules['14_sms']['03_sms_send']                   = 'sms.php?act=display_send_
 
 $modules['15_rec']['affiliate']                     = 'affiliate.php?act=list';
 $modules['15_rec']['affiliate_ck']                  = 'affiliate_ck.php?act=list';
+$modules['15_rec']['affiliate_agent']               = 'affiliate_agent.php?act=list';
 
 $modules['16_email_manage']['email_list']           = 'email_list.php?act=list';
 $modules['16_email_manage']['magazine_list']        = 'magazine_list.php?act=list';

@@ -13,10 +13,13 @@ var process_request = "{$lang.process_request}";
    <!--{if $navigator_list.top}-->
    <li id="topNav" class="clearfix">
     <!-- {foreach name=nav_top_list from=$navigator_list.top item=nav} -->
+			<!-- {if $nav.name == $lang.wholesale && !$is_distributor} -->
+			<!-- {else} -->
             <a href="{$nav.url}" <!-- {if $nav.opennew eq 1} --> target="_blank" <!-- {/if} -->>{$nav.name}</a>
             <!-- {if !$smarty.foreach.nav_top_list.last} -->
              |
             <!-- {/if} -->
+			<!-- {/if} -->
     <!-- {/foreach} -->
     <div class="topNavR"></div>
    </li>

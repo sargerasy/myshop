@@ -178,6 +178,7 @@ scrollAmount=3><U><FONT color=red>
   'wap_config' => '0',
   'wap_logo' => '',
   'message_check' => '1',
+  'affiliate_agent' => 'a:3:{s:6:"config";a:7:{s:6:"expire";d:24;s:11:"expire_unit";s:4:"hour";s:11:"separate_by";i:0;s:15:"level_point_all";s:2:"5%";s:15:"level_money_all";s:2:"1%";s:18:"level_register_all";i:2;s:17:"level_register_up";i:60;}s:4:"item";a:4:{i:0;a:2:{s:11:"level_point";s:4:"0.6%";s:11:"level_money";s:4:"0.6%";}i:1;a:2:{s:11:"level_point";s:4:"0.3%";s:11:"level_money";s:4:"0.3%";}i:2;a:2:{s:11:"level_point";s:5:"0.07%";s:11:"level_money";s:5:"0.07%";}i:3;a:2:{s:11:"level_point";s:5:"0.03%";s:11:"level_money";s:5:"0.03%";}}s:2:"on";i:1;}',
   'best_number' => 3,
   'new_number' => 3,
   'hot_number' => 3,

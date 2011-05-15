@@ -301,6 +301,7 @@ $_LANG['06_sms_charge_history'] = '充值记录';
 
 $_LANG['affiliate'] = '推荐设置';
 $_LANG['affiliate_ck'] = '分成管理';
+$_LANG['affiliate_agent'] = '业务经理分成设置';
 $_LANG['flashplay'] = '首页主广告管理';
 $_LANG['search_log'] = '搜索关键字';
 $_LANG['email_list'] = '邮件订阅管理';

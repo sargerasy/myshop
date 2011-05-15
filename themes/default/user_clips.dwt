@@ -409,7 +409,7 @@
     </table>
      </form>
     <!-- {/if} -->
-    <!-- *我的推荐 -->
+    <!-- #我的推荐 -->
     <!-- {if $affiliate.on eq 1} -->
      <!-- {if $action eq 'affiliate'} -->
       <!-- {if !$goodsid || $goodsid eq 0} -->

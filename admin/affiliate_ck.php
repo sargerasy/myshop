@@ -112,14 +112,17 @@ elseif ($_REQUEST['act'] == 'separate')
 {
     include_once(ROOT_PATH . 'includes/lib_order.php');
     $affiliate = unserialize($GLOBALS['_CFG']['affiliate']);
+	$affiliate_agent = unserialize($GLOBALS['_CFG']['affiliate_agent']);
     empty($affiliate) && $affiliate = array();
+    empty($affiliate_agent) && $affiliate_agent = array();
 
     $separate_by = $affiliate['config']['separate_by'];
 
     $oid = (int)$_REQUEST['oid'];
 
-    $row = $db->getRow("SELECT o.order_sn, o.is_separate, (o.goods_amount - o.discount) AS goods_amount, o.user_id FROM " . $GLOBALS['ecs']->table('order_info') . " o".
+    $row = $db->getRow("SELECT o.order_sn, o.is_separate, (o.goods_amount - o.discount) AS goods_amount, o.user_id, r.rank_name FROM " . $GLOBALS['ecs']->table('order_info') . " o".
                     " LEFT JOIN " . $GLOBALS['ecs']->table('users') . " u ON o.user_id = u.user_id".
+					" LEFT JOIN " . $GLOBALS['ecs']->table('user_rank') . " r ON r.rank_id = u.user_rank".
             " WHERE order_id = '$oid'");
 
     $order_sn = $row['order_sn'];
@@ -142,38 +145,45 @@ elseif ($_REQUEST['act'] == 'separate')
 
         if(empty($separate_by))
         {
-            //推荐注册分成
-            $num = count($affiliate['item']);
-            for ($i=0; $i < $num; $i++)
-            {
-                $affiliate['item'][$i]['level_point'] = (float)$affiliate['item'][$i]['level_point'];
-                $affiliate['item'][$i]['level_money'] = (float)$affiliate['item'][$i]['level_money'];
-                if ($affiliate['item'][$i]['level_point'])
-                {
-                    $affiliate['item'][$i]['level_point'] /= 100;
-                }
-                if ($affiliate['item'][$i]['level_money'])
-                {
-                    $affiliate['item'][$i]['level_money'] /= 100;
-                }
-                $setmoney = round($money * $affiliate['item'][$i]['level_money'], 2);
-                $setpoint = round($point * $affiliate['item'][$i]['level_point'], 0);
-                $row = $db->getRow("SELECT o.parent_id as user_id,u.user_name FROM " . $GLOBALS['ecs']->table('users') . " o" .
-                        " LEFT JOIN" . $GLOBALS['ecs']->table('users') . " u ON o.parent_id = u.user_id".
-                        " WHERE o.user_id = '$row[user_id]'"
-                    );
-                $up_uid = $row['user_id'];
-                if (empty($up_uid) || empty($row['user_name']))
-                {
-                    break;
-                }
-                else
-                {
-                    $info = sprintf($_LANG['separate_info'], $order_sn, $setmoney, $setpoint);
-                    log_account_change($up_uid, $setmoney, 0, $setpoint, 0, $info);
-                    write_affiliate_log($oid, $up_uid, $row['user_name'], $setmoney, $setpoint, $separate_by);
-                }
-            }
+			if ($row['is_wholesale'] && $$affiliate_agent) 
+			{
+				echo "HI";
+			}
+			else
+			{
+				//推荐注册分成
+				$num = count($affiliate['item']);
+				for ($i=0; $i < $num; $i++)
+				{
+					$affiliate['item'][$i]['level_point'] = (float)$affiliate['item'][$i]['level_point'];
+					$affiliate['item'][$i]['level_money'] = (float)$affiliate['item'][$i]['level_money'];
+					if ($affiliate['item'][$i]['level_point'])
+					{
+						$affiliate['item'][$i]['level_point'] /= 100;
+					}
+					if ($affiliate['item'][$i]['level_money'])
+					{
+						$affiliate['item'][$i]['level_money'] /= 100;
+					}
+					$setmoney = round($money * $affiliate['item'][$i]['level_money'], 2);
+					$setpoint = round($point * $affiliate['item'][$i]['level_point'], 0);
+					$row = $db->getRow("SELECT o.parent_id as user_id,u.user_name FROM " . $GLOBALS['ecs']->table('users') . " o" .
+							" LEFT JOIN" . $GLOBALS['ecs']->table('users') . " u ON o.parent_id = u.user_id".
+							" WHERE o.user_id = '$row[user_id]'"
+						);
+					$up_uid = $row['user_id'];
+					if (empty($up_uid) || empty($row['user_name']))
+					{
+						break;
+					}
+					else
+					{
+						$info = sprintf($_LANG['separate_info'], $order_sn, $setmoney, $setpoint);
+						log_account_change($up_uid, $setmoney, 0, $setpoint, 0, $info);
+						write_affiliate_log($oid, $up_uid, $row['user_name'], $setmoney, $setpoint, $separate_by);
+					}
+				}
+			}
         }
         else
         {

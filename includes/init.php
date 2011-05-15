@@ -82,7 +82,6 @@ require(ROOT_PATH . 'includes/lib_main.php');
 require(ROOT_PATH . 'includes/lib_insert.php');
 require(ROOT_PATH . 'includes/lib_goods.php');
 require(ROOT_PATH . 'includes/lib_article.php');
-
 /* 对用户传入的变量进行转义操作。*/
 if (!get_magic_quotes_gpc())
 {
@@ -277,6 +276,13 @@ if (!defined('INIT_NO_USERS'))
         $smarty->assign('ecs_session', $_SESSION);
     }
 }
+include_once(ROOT_PATH .'includes/lib_clips.php');
+$rank = get_rank_info();
+$is_agent = $rank ? $rank['rank_name']==$_LANG['agent'] : false;
+$is_distributor = $rank ? $rank['rank_name']==$_LANG['distributor'] : false;
+$affiliate_agent = $is_agent || $is_distributor ? unserialize($GLOBALS['_CFG']['affiliate_agent']) : array();
+$smarty->assign('is_agent',   $is_agent);
+$smarty->assign('is_distributor',  $is_distributor);
 
 if ((DEBUG_MODE & 1) == 1)
 {

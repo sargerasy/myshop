@@ -23,7 +23,6 @@ require_once(ROOT_PATH . 'languages/' .$_CFG['lang']. '/user.php');
 
 $user_id = $_SESSION['user_id'];
 $action  = isset($_REQUEST['act']) ? trim($_REQUEST['act']) : 'default';
-$rank = get_rank_info();
 
 $affiliate = unserialize($GLOBALS['_CFG']['affiliate']);
 $smarty->assign('affiliate', $affiliate);
@@ -90,8 +89,6 @@ if (in_array($action, $ui_arr))
     $smarty->assign('action',     $action);
     $smarty->assign('lang',       $_LANG);
 	$smarty->assign('rank_level', $rank['rank_name']);
-	$smarty->assign('is_agent',   $rank['rank_name']==$_LANG['agent']);
-	$smarty->assign('is_distributor',  $rank['rank_name']==$_LANG['distributor']);
 }
 
 //用户中心欢迎页

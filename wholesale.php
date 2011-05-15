@@ -356,6 +356,7 @@ elseif ($_REQUEST['act'] == 'submit_order')
         'pay_status'      => PS_UNPAYED,
         'goods_amount'    => $goods_amount,
         'order_amount'    => $goods_amount,
+		'is_wholesale'    => true,
     );
 
     /* 插入订单表 */
