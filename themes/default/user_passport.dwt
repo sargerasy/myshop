@@ -165,7 +165,7 @@
         <tr>
           <td align="right" <!-- {if $field.is_need || (($type eq 'agent' || $type eq 'distributor') && ($field.reg_field_name eq $lang.label_phone || $field.reg_field_name eq $lang.label_referee))} -->id="extend_field{$field.id}i"<!--{/if}-->>{$field.reg_field_name}
           <td>
-			  <input name="extend_field{$field.id}" type="text" size="25" <!-- {if $field.reg_field_name eq $lang.label_referee} -->disabled="true" value="{$referee.user_name}"<!-- {/if} --> class="inputBg" /><!-- {if $field.is_need || (($type eq 'agent' || $type eq 'distributor') && ($field.reg_field_name eq $lang.label_phone || $field.reg_field_name eq $lang.label_referee))} --><span style="color:#FF0000"> *</span><!-- {/if} -->
+			  <input name="extend_field{$field.id}" type="text" size="25" <!-- {if $field.reg_field_name eq $lang.label_referee} -->readonly="readonly" value="{$referee.user_name}"<!-- {/if} --> /><!-- {if $field.is_need || (($type eq 'agent' || $type eq 'distributor') && ($field.reg_field_name eq $lang.label_phone || $field.reg_field_name eq $lang.label_referee))} --><span style="color:#FF0000"> *</span><!-- {/if} -->
 			  <input name="referee" type="hidden" value="{$referee.user_id}"/>
           </td>
         </tr>

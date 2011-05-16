@@ -11,7 +11,9 @@
 <link rel="icon" href="animated_favicon.gif" type="image/gif" />
 <link href="{$ecs_css_path}" rel="stylesheet" type="text/css" />
 {* 包含脚本文件 *}
-{insert_scripts files='transport.js,common.js,user.js'}
+{insert_scripts files='transport.js,common.js,user.js,jquery-1.5.2.min.js'}
+<script type="text/javascript" src="../js/calendar.php?lang={$cfg_lang}"></script>
+<link href="../js/calendar/calendar.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
@@ -592,6 +594,187 @@ copyToClipboard = function(txt)
     <!-- {/if} -->
 
   <!-- /我的推荐 -->
+  <!-- #业务经理专区 start -->
+  <!-- {if $action eq 'agent'} -->
+  <!-- {if $affiliate.config.separate_by eq 0} -->
+  <!-- 分成规则 -->
+  <div class="blank"></div>
+  <h5><span><a name="myrecommend">{$lang.separate_rule}</a></span></h5>
+  <div class="blank"></div>
+  {$affiliate_agent_intro}
+  <div class="blank"></div>
+  <div class="blank"></div>
+  <table width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
+	  <tr align="center">
+		  <td bgcolor="#ffffff">{$lang.affiliate_lever}</td>
+		  <td bgcolor="#ffffff">{$lang.level_point}</td>
+		  <td bgcolor="#ffffff">{$lang.level_money}</td>
+	  </tr>
+	  <!-- {foreach from=$affdb key=level item=val name=affdb} -->
+	  <tr align="center">
+		  <td bgcolor="#ffffff">{$level}</td>
+		  <td bgcolor="#ffffff">{$val.point}</td>
+		  <td bgcolor="#ffffff">{$val.money}</td>
+	  </tr>
+	  <!-- {/foreach} -->
+  </table>
+  <!-- /分成规则 -->
+  <!-- 下线人数 -->
+  <div class="blank"></div>
+  <h5><span><a name="myrecommend">{$lang.affiliate_count}</a></span></h5>
+  <div class="blank"></div>
+  <table width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
+	  <tr align="center">
+		  <td bgcolor="#ffffff">{$lang.affiliate_lever}</td>
+		  <td bgcolor="#ffffff">{$lang.separate_type}</td>
+		  <td bgcolor="#ffffff">{$lang.affiliate_count}</td>
+		  <td bgcolor="#ffffff">{$lang.separate_type}</td>
+		  <td bgcolor="#ffffff">{$lang.affiliate_count}</td>
+	  </tr>
+	  <!-- {foreach from=$affdb key=level item=val name=affdb} -->
+	  <tr align="center">
+		  <td bgcolor="#ffffff">{$level}</td>
+		  {if $smarty.foreach.affdb.first}<td bgcolor="#ffffff" rowspan="4">{$lang.agent}</td>{/if}
+		  <td bgcolor="#ffffff">{$val.anum}</td>
+		  {if $smarty.foreach.affdb.first}<td bgcolor="#ffffff" rowspan="4">{$lang.distributor}</td>{/if}
+		  <td bgcolor="#ffffff">{$val.dnum}</td>
+	  </tr>
+	  <!-- {/foreach} -->
+  </table>
+  <div class="blank"></div>
+  <h5><span><a name="myrecommend">{$lang.direct_referee}</a></span></h5>
+  <div class="blank"></div>
+  <table width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
+	  <tr align="center">
+		  <td bgcolor="#ffffff">{$lang.num}</td>
+		  <td bgcolor="#ffffff">{$lang.name}</td>
+		  <td bgcolor="#ffffff">{$lang.separate_type}</td>
+	  </tr>
+	  <script>
+		  $(document).ready(function() {
+			  $(".distributor").click(function(){
+				  var self = $(this);
+				  var id = self.attr("rel");
+				  var form = $("#detail_search");
+				  form.append('<input type="hidden" value="' + id + '" name="referee_id"/>');
+				  form.submit();
+				  return false;
+			  });
+		  });
+	  </script>
+	  <!-- {foreach from=$direct_referee key=level item=val name=affdb} -->
+	  <tr align="center">
+		  <td bgcolor="#ffffff">{$level}</td>
+		  {if $val.rank_name eq $lang.distributor}
+		  <td bgcolor="#ffffff"><a href="" rel="{$val.user_id}" class="distributor">{$val.user_name}</a></td>
+		  {else}
+		  <td bgcolor="#ffffff">{$val.user_name}</td>
+		  {/if}
+		  <td bgcolor="#ffffff">{$val.rank_name}</td>
+	  </tr>
+	  <!-- {/foreach} -->
+  </table>
+  <!-- /下线人数 -->
+  <!-- {else} -->
+  <!-- 介绍订单数、分成 -->
+  <!-- /介绍订单数、分成 -->
+  <!-- {/if} -->
+  <!-- 我的推荐清单 -->
+  <div class="blank"></div>
+  <h5><span>{$lang.separate_detail}</span></h5>
+  <div class="blank"></div>
+  <form action="{$php_self}?{$query_string}" method="POST" id="detail_search">
+	  <input type="text" id="start_time_id" readonly="readonly" value="{$start_time}" name="start_time"/>
+	  <input type="button" class="button" value="选择" onclick="return showCalendar('start_time_id', '%Y-%m-%d', '24', false, 'selbtn1');" id="selbtn1" name="selbtn1">
+	  <input type="text" id="end_time_id" readonly="readonly" value="{$end_time}" name="end_time"/>
+	  <input type="button" class="button" value="选择" onclick="return showCalendar('end_time_id', '%Y-%m-%d', '24', false, 'selbtn1');" id="selbtn1" name="selbtn1">
+	  <select name="separate_type">
+		  <option value="all">所有</option>
+		  <option value="100" {if $separate_type eq "100"}selected="selected"{/if}>一级经销商</option>
+		  <option value="101" {if $separate_type eq "101"}selected="selected"{/if}>二级经销商</option>
+		  <option value="102" {if $separate_type eq "102"}selected="selected"{/if}>三级经销商</option>
+		  <option value="103" {if $separate_type eq "103"}selected="selected"{/if}>四级经销商</option>
+	  </select>
+	  <input type="submit" value="{$lang.search}"/>
+  </form>
+  <div class="blank"></div>
+  <table width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
+	  <tr align="center">
+		  <td bgcolor="#ffffff">{$lang.order_number}</td>
+		  <td bgcolor="#ffffff">{$lang.separate_type}</td>
+		  <td bgcolor="#ffffff">{$lang.affiliate_status}</td>
+		  <td bgcolor="#ffffff">{$lang.affiliate_point}</td>
+		  <td bgcolor="#ffffff">{$lang.affiliate_money}</td>
+	  </tr>
+	  <!-- {foreach from=$logdb item=val name=logdb} -->
+	  <tr align="center">
+		  <td bgcolor="#ffffff">{$val.order_sn}</td>
+		  <td bgcolor="#ffffff">{if $val.separate_type == 100}一级经销商{elseif $val.separate_type == 101}二级经销{elseif $val.separate_type == 102}三级经销商商{elseif $val.separate_type == 103}四级经销商{/if}</td>
+		  <td bgcolor="#ffffff">{$lang.affiliate_stats[$val.is_separate]}</td>
+		  <td bgcolor="#ffffff">{$val.point}</td>
+		  <td bgcolor="#ffffff">{$val.money}</td>
+	  </tr>
+	  {foreachelse}
+	  <tr><td colspan="5" align="center" bgcolor="#ffffff">{$lang.no_records}</td>
+	  </tr>
+	  <!-- {/foreach} -->
+	  <tr align="center">
+		  <td bgcolor="#ffffff" colspan="4">累计</td>
+		  <td bgcolor="#ffffff">{$sum_money}</td>
+	  </tr>
+	  <!-- {if $logdb} -->
+	  <tr>
+		  <td colspan="5" bgcolor="#ffffff">
+			  <form action="{$smarty.server.PHP_SELF}" method="get">
+				  <div id="pager"> {$lang.pager_1}{$pager.record_count}{$lang.pager_2}{$lang.pager_3}{$pager.page_count}{$lang.pager_4} <span> <a href="{$pager.page_first}">{$lang.page_first}</a> <a href="{$pager.page_prev}">{$lang.page_prev}</a> <a href="{$pager.page_next}">{$lang.page_next}</a> <a href="{$pager.page_last}">{$lang.page_last}</a> </span>
+					  <select name="page" id="page" onchange="selectPage(this)">
+						  {html_options options=$pager.array selected=$pager.page}
+					  </select>
+					  <input type="hidden" name="act" value="agent" />
+				  </div>
+			  </form>
+		  </td>
+	  </tr>
+	  <!-- {/if} -->
+  </table>
+<div class="blank"></div>
+<h5><span>{$lang.affiliate_code}</span></h5>
+<div class="blank"></div>
+<table width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
+<tr>
+<td width="30%" bgcolor="#ffffff"><a href="{$shopurl}user.php?u={$userid}&act=register&type=agent" target="_blank" class="f6">{$shopname}</a></td>
+<td bgcolor="#ffffff"><input size="40" onclick="this.select();" type="text" value="&lt;a href=&quot;{$shopurl}user.php?u={$userid}&act=register&type=agent&quot; target=&quot;_blank&quot;&gt;{$shopname}&lt;/a&gt;" style="border:1px solid #ccc;" /> {$lang.agent_register}{$lang.recommend_webcode}</td>
+</tr>
+<tr>
+<td width="30%" bgcolor="#ffffff"><a href="{$shopurl}user.php?u={$userid}&act=register&type=distributor" target="_blank" class="f6">{$shopname}</a></td>
+<td bgcolor="#ffffff"><input size="40" onclick="this.select();" type="text" value="&lt;a href=&quot;{$shopurl}user.php?u={$userid}&act=register&type=distributor&quot; target=&quot;_blank&quot;&gt;{$shopname}&lt;/a&gt;" style="border:1px solid #ccc;" /> {$lang.distributor_register}{$lang.recommend_webcode}</td>
+</tr>
+<!--
+<tr>
+<td bgcolor="#ffffff" rowspan="2"><a href="{$shopurl}user.php?u={$userid}&act=register&type=agent" target="_blank" title="{$shopname}"  class="f6"><img src="{$shopurl}{$logosrc}" /></a></td>
+<td bgcolor="#ffffff"><input size="40" onclick="this.select();" type="text" value="&lt;a href=&quot;{$shopurl}user.php?u={$userid}&act=register&type=agent&quot; target=&quot;_blank&quot; title=&quot;{$shopname}&quot;&gt;&lt;img src=&quot;{$shopurl}{$logosrc}&quot; /&gt;&lt;/a&gt;" style="border:1px solid #ccc;" /> {$lang.agent_register}{$lang.recommend_webcode}</td>
+</tr>
+<tr>
+<td bgcolor="#ffffff"><input size="40" onclick="this.select();" type="text" value="&lt;a href=&quot;{$shopurl}user.php?u={$userid}&act=register&type=agent&quot; target=&quot;_blank&quot; title=&quot;{$shopname}&quot;&gt;&lt;img src=&quot;{$shopurl}{$logosrc}&quot; /&gt;&lt;/a&gt;" style="border:1px solid #ccc;" /> {$lang.distributor_register}{$lang.recommend_webcode}</td>
+</tr>
+<tr>
+<td bgcolor="#ffffff" rowspan="2"><a href="{$shopurl}user.php?u={$userid}&act=register&type=agent" target="_blank" class="f6">{$shopname}</a></td>
+<td bgcolor="#ffffff"><input size="40" onclick="this.select();" type="text" value="[url={$shopurl}user.php?u={$userid}&act=register&type=agent]{$shopname}[/url]" style="border:1px solid #ccc;" /> {$lang.agent_register}{$lang.recommend_bbscode}</td>
+</tr>
+<tr>
+<td bgcolor="#ffffff"><input size="40" onclick="this.select();" type="text" value="[url={$shopurl}user.php?u={$userid}&act=register&type=agent]{$shopname}[/url]" style="border:1px solid #ccc;" /> {$lang.distributor_register}{$lang.recommend_bbscode}</td>
+</tr>
+<tr>
+<td bgcolor="#ffffff" rowspan="2"><a href="{$shopurl}user.php?u={$userid}&act=register&type=agent" target="_blank" title="{$shopname}" class="f6"><img src="{$shopurl}{$logosrc}" /></a></td>
+<td bgcolor="#ffffff"><input size="40" onclick="this.select();" type="text" value="[url={$shopurl}user.php?u={$userid}&act=register&type=agent][img]{$shopurl}{$logosrc}[/img][/url]" style="border:1px solid #ccc;" /> {$lang.agent_register}{$lang.recommend_bbscode}</td>
+</tr>
+<tr>
+<td bgcolor="#ffffff"><input size="40" onclick="this.select();" type="text" value="[url={$shopurl}user.php?u={$userid}&act=register&type=agent][img]{$shopurl}{$logosrc}[/img][/url]" style="border:1px solid #ccc;" /> {$lang.distributor_register}{$lang.recommend_bbscode}</td>
+</tr>
+-->
+</table>
+  <!-- {/if} -->
+  <!-- #业务经理专区 end -->
       </div>
      </div>
     </div>

@@ -21,7 +21,7 @@ define('IN_ECS', true);
 require(dirname(__FILE__) . '/includes/init.php');
 
 /* 如果没登录，提示登录 */
-if ($_SESSION['user_rank'] <= 0)
+if ($_SESSION['user_rank'] != 5)
 {
     show_message($_LANG['ws_user_rank'], $_LANG['ws_return_home'], 'index.php');
 }

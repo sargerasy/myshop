@@ -260,6 +260,7 @@ elseif ($action == 'act_register')
             $ucdata = empty($user->ucdata)? "" : $user->ucdata;
 			/* 写入把业务经理和经销商的user_rank */
 			$db->query('UPDATE '. $ecs->table('users') . " SET `user_rank`='$rank_id' WHERE `user_id`='" . $_SESSION['user_id'] . "'");
+			$_SESSION['user_rank'] = $rank_id;
             show_message(sprintf($_LANG['register_success'], $username . $ucdata), array($_LANG['back_up_page'], $_LANG['profile_lnk']), array($back_act, 'user.php'), 'info');
         }
         else
@@ -2140,12 +2141,12 @@ elseif ($action == 'affiliate')
             $sqlcount = "SELECT count(*) FROM " . $ecs->table('order_info') . " o".
         " LEFT JOIN".$ecs->table('users')." u ON o.user_id = u.user_id".
         " LEFT JOIN " . $ecs->table('affiliate_log') . " a ON o.order_id = a.order_id" .
-        " WHERE o.user_id > 0 AND (u.parent_id IN ($all_uid) AND o.is_separate = 0 OR a.user_id = '$user_id' AND o.is_separate > 0)";
+        " WHERE o.is_wholesale != 1 AND o.user_id > 0 AND (u.parent_id IN ($all_uid) AND o.is_separate = 0 OR a.user_id = '$user_id' AND o.is_separate > 0)";
 
             $sql = "SELECT o.*, a.log_id, a.user_id as suid,  a.user_name as auser, a.money, a.point, a.separate_type FROM " . $ecs->table('order_info') . " o".
                     " LEFT JOIN".$ecs->table('users')." u ON o.user_id = u.user_id".
                     " LEFT JOIN " . $ecs->table('affiliate_log') . " a ON o.order_id = a.order_id" .
-        " WHERE o.user_id > 0 AND (u.parent_id IN ($all_uid) AND o.is_separate = 0 OR a.user_id = '$user_id' AND o.is_separate > 0)".
+        " WHERE o.is_wholesale != 1 AND o.user_id > 0 AND (u.parent_id IN ($all_uid) AND o.is_separate = 0 OR a.user_id = '$user_id' AND o.is_separate > 0)".
                     " ORDER BY order_id DESC" ;
 
             /*
@@ -2170,13 +2171,13 @@ elseif ($action == 'affiliate')
             $sqlcount = "SELECT count(*) FROM " . $ecs->table('order_info') . " o".
                     " LEFT JOIN".$ecs->table('users')." u ON o.user_id = u.user_id".
                     " LEFT JOIN " . $ecs->table('affiliate_log') . " a ON o.order_id = a.order_id" .
-                    " WHERE o.user_id > 0 AND (o.parent_id = '$user_id' AND o.is_separate = 0 OR a.user_id = '$user_id' AND o.is_separate > 0)";
+                    " WHERE o.is_wholesale != 1 AND o.user_id > 0 AND (o.parent_id = '$user_id' AND o.is_separate = 0 OR a.user_id = '$user_id' AND o.is_separate > 0)";
 
 
             $sql = "SELECT o.*, a.log_id,a.user_id as suid, a.user_name as auser, a.money, a.point, a.separate_type,u.parent_id as up FROM " . $ecs->table('order_info') . " o".
                     " LEFT JOIN".$ecs->table('users')." u ON o.user_id = u.user_id".
                     " LEFT JOIN " . $ecs->table('affiliate_log') . " a ON o.order_id = a.order_id" .
-                    " WHERE o.user_id > 0 AND (o.parent_id = '$user_id' AND o.is_separate = 0 OR a.user_id = '$user_id' AND o.is_separate > 0)" .
+                    " WHERE o.is_wholesale != 1 AND o.user_id > 0 AND (o.parent_id = '$user_id' AND o.is_separate = 0 OR a.user_id = '$user_id' AND o.is_separate > 0)" .
                     " ORDER BY order_id DESC" ;
 
             /*
@@ -2776,10 +2777,181 @@ elseif ($action == 'clear_history')
 /* 业务经理专区 */
 elseif ($action == 'agent')
 {
-	if ($rank['rank_name'] != $_LANG['agent']){
-		show_message($_LANG['no_permission']);
+	$smarty->assign('query_string', $_SERVER['QUERY_STRING']);
+	$smarty->assign('php_self', $_SERVER['PHP_SELF']);
+	$page       = !empty($_REQUEST['page'])  && intval($_REQUEST['page'])  > 0 ? intval($_REQUEST['page'])  : 1;
+	$size       = !empty($_CFG['page_size']) && intval($_CFG['page_size']) > 0 ? intval($_CFG['page_size']) : 10;
+
+	$affiliate = $affiliate_agent ? $affiliate_agent : array();
+
+	if(empty($affiliate['config']['separate_by']))
+	{
+		//业务经理分成
+		$affdb = array();
+		$num = count($affiliate['item']);
+		$up_uid = "'$user_id'";
+		$all_uid = "'$user_id'";
+		for ($i = 1 ; $i <=$num ;$i++)
+		{
+			$acount = 0;
+			$dcount = 0;
+			if ($up_uid)
+			{
+				$sql = "SELECT user_id, user_name, r.rank_name FROM " . $ecs->table('users') . " u LEFT JOIN ". $ecs->table('user_rank') . " r ON u.user_rank=r.rank_id " . " WHERE parent_id IN($up_uid)";
+				$query = $db->query($sql);
+				$up_uid = '';
+				while ($rt = $db->fetch_array($query))
+				{
+					$up_uid .= $up_uid ? ",'$rt[user_id]'" : "'$rt[user_id]'";
+					if($i < $num)
+					{
+						$all_uid .= ", '$rt[user_id]'";
+					}
+					if ($rt['rank_name'] == $_LANG['agent'])
+					{
+						$acount++;
+					}
+					else if ($rt['rank_name'] == $_LANG['distributor'])
+					{
+						$dcount++;
+					}
+				}
+			}
+			$affdb[$i]['anum'] = $acount;
+			$affdb[$i]['dnum'] = $dcount;
+			$affdb[$i]['point'] = $affiliate['item'][$i-1]['level_point'];
+			$affdb[$i]['money'] = $affiliate['item'][$i-1]['level_money'];
+		}
+		$smarty->assign('affdb', $affdb);
+
+		$up_uid = "'$user_id'";
+		$sql = "SELECT user_id, user_name, r.rank_name FROM " . $ecs->table('users') . " u LEFT JOIN ". $ecs->table('user_rank') . " r ON u.user_rank=r.rank_id " . " WHERE parent_id=$up_uid";
+		$query = $db->query($sql);
+		$direct_referee = array();
+		while ($rt = $db->fetch_array($query))
+		{
+			if ($rt['rank_name'] == $_LANG['agent'] || $rt['rank_name'] == $_LANG['distributor'])
+				$direct_referee[] = $rt;
+		}
+		$smarty->assign('direct_referee', $direct_referee);
+
+		$smarty->assign('end_time', local_date('Y-m-d', strtotime('+1 day')));
+		$smarty->assign('start_time', local_date('Y-m-d', strtotime('-1 month')));
+
+		/* 将时间转换成整数 */
+		$start_time = local_strtotime($_REQUEST['start_time']);
+		$end_time   = local_strtotime($_REQUEST['end_time']);
+		$referee_id = $_REQUEST['referee_id'];
+
+		$time_clause = "";
+		if($start_time > 0 && $end_time > 0)
+		{
+			$time_clause = " AND add_time between $start_time and $end_time ";
+		}
+
+		$separate_type = (int)$_POST['separate_type'];
+		$smarty->assign('separate_type', $separate_type);
+		if($separate_type >= 100)
+		{
+			$type_clause = " AND separate_type=$separate_type ";
+		}
+
+		if($referee_id)
+		{
+			$referee_clause = " AND u.user_id=$referee_id ";
+		}
+
+		$addition_clause = $time_clause.$type_clause.$referee_clause;
+
+		$sqlcount = "SELECT count(*) as count, sum(a.money) as sum_money FROM " . $ecs->table('order_info') . " o".
+	" LEFT JOIN".$ecs->table('users')." u ON o.user_id = u.user_id".
+	" LEFT JOIN " . $ecs->table('affiliate_log') . " a ON o.order_id = a.order_id" .
+	" WHERE (separate_type>100 or is_wholesale=1) AND o.user_id > 0 AND (u.parent_id IN ($all_uid) AND o.is_separate = 0 OR a.user_id = '$user_id' AND o.is_separate > 0)".$addition_clause;
+
+		$sql = "SELECT o.*, a.log_id, a.user_id as suid,  a.user_name as auser, a.money, a.point, a.separate_type FROM " . $ecs->table('order_info') . " o".
+				" LEFT JOIN".$ecs->table('users')." u ON o.user_id = u.user_id".
+				" LEFT JOIN " . $ecs->table('affiliate_log') . " a ON o.order_id = a.order_id" .
+	" WHERE (separate_type>100 or is_wholesale=1) AND o.user_id > 0 AND (u.parent_id IN ($all_uid) AND o.is_separate = 0 OR a.user_id = '$user_id' AND o.is_separate > 0)".$addition_clause;
+				" ORDER BY order_id DESC" ;
+
+		/*
+			SQL解释：
+
+			订单、用户、分成记录关联
+			一个订单可能有多个分成记录
+
+			1、订单有效 o.user_id > 0
+			2、满足以下之一：
+				a.直接下线的未分成订单 u.parent_id IN ($all_uid) AND o.is_separate = 0
+					其中$all_uid为该ID及其下线(不包含最后一层下线)
+				b.全部已分成订单 a.user_id = '$user_id' AND o.is_separate > 0
+
+		*/
+
+		$affiliate_intro = nl2br(sprintf($_LANG['affiliate_intro'][$affiliate['config']['separate_by']], $affiliate['config']['expire'], $_LANG['expire_unit'][$affiliate['config']['expire_unit']], $affiliate['config']['level_register_all'], $affiliate['config']['level_register_up'], $affiliate['config']['level_money_all'], $affiliate['config']['level_point_all']));
 	}
-    $smarty->display('user_transaction.dwt');
+	$row = $db->getRow($sqlcount);
+	$count = $row['count'];
+	$sum_money = $row['sum_money'];
+	$smarty->assign('sum_money', $sum_money);
+
+	$max_page = ($count> 0) ? ceil($count / $size) : 1;
+	if ($page > $max_page)
+	{
+		$page = $max_page;
+	}
+
+	$res = $db->SelectLimit($sql, $size, ($page - 1) * $size);
+	$logdb = array();
+	while ($rt = $GLOBALS['db']->fetchRow($res))
+	{
+		if(!empty($rt['suid']))
+		{
+			//在affiliate_log有记录
+			if($rt['separate_type'] == -1 || $rt['separate_type'] == -2)
+			{
+				//已被撤销
+				$rt['is_separate'] = 3;
+			}
+		}
+		$rt['order_sn'] = substr($rt['order_sn'], 0, strlen($rt['order_sn']) - 5) . "***" . substr($rt['order_sn'], -2, 2);
+		$logdb[] = $rt;
+	}
+
+	$url_format = "user.php?act=affiliate&page=";
+
+	$pager = array(
+				'page'  => $page,
+				'size'  => $size,
+				'sort'  => '',
+				'order' => '',
+				'record_count' => $count,
+				'page_count'   => $max_page,
+				'page_first'   => $url_format. '1',
+				'page_prev'    => $page > 1 ? $url_format.($page - 1) : "javascript:;",
+				'page_next'    => $page < $max_page ? $url_format.($page + 1) : "javascript:;",
+				'page_last'    => $url_format. $max_page,
+				'array'        => array()
+			);
+	for ($i = 1; $i <= $max_page; $i++)
+	{
+		$pager['array'][$i] = $i;
+	}
+
+	$smarty->assign('url_format', $url_format);
+	$smarty->assign('pager', $pager);
+
+
+	$smarty->assign('affiliate_intro', $affiliate_intro);
+	$smarty->assign('affiliate_type', $affiliate['config']['separate_by']);
+
+	$smarty->assign('logdb', $logdb);
+	$smarty->assign('shopname', $_CFG['shop_name']);
+	$smarty->assign('userid', $user_id);
+	$smarty->assign('shopurl', $ecs->url());
+	$smarty->assign('logosrc', 'themes/' . $_CFG['template'] . '/images/logo.gif');
+
+	$smarty->display('user_clips.dwt');
 }
 /* 经销商专区 */
 elseif ($action == 'distributor') 

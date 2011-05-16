@@ -1,4 +1,4 @@
-<?php exit;?>a:3:{s:8:"template";a:21:{i:0;s:50:"F:/xamp/xampp/htdocs/shop/themes/default/index.dwt";i:1;s:64:"F:/xamp/xampp/htdocs/shop/themes/default/library/page_header.lbi";i:2;s:57:"F:/xamp/xampp/htdocs/shop/themes/default/library/cart.lbi";i:3;s:66:"F:/xamp/xampp/htdocs/shop/themes/default/library/category_tree.lbi";i:4;s:58:"F:/xamp/xampp/htdocs/shop/themes/default/library/top10.lbi";i:5;s:67:"F:/xamp/xampp/htdocs/shop/themes/default/library/promotion_info.lbi";i:6;s:64:"F:/xamp/xampp/htdocs/shop/themes/default/library/order_query.lbi";i:7;s:66:"F:/xamp/xampp/htdocs/shop/themes/default/library/invoice_query.lbi";i:8;s:62:"F:/xamp/xampp/htdocs/shop/themes/default/library/vote_list.lbi";i:9;s:63:"F:/xamp/xampp/htdocs/shop/themes/default/library/email_list.lbi";i:10;s:61:"F:/xamp/xampp/htdocs/shop/themes/default/library/index_ad.lbi";i:11;s:65:"F:/xamp/xampp/htdocs/shop/themes/default/library/new_articles.lbi";i:12;s:72:"F:/xamp/xampp/htdocs/shop/themes/default/library/recommend_promotion.lbi";i:13;s:59:"F:/xamp/xampp/htdocs/shop/themes/default/library/brands.lbi";i:14;s:67:"F:/xamp/xampp/htdocs/shop/themes/default/library/recommend_best.lbi";i:15;s:66:"F:/xamp/xampp/htdocs/shop/themes/default/library/recommend_new.lbi";i:16;s:66:"F:/xamp/xampp/htdocs/shop/themes/default/library/recommend_hot.lbi";i:17;s:60:"F:/xamp/xampp/htdocs/shop/themes/default/library/auction.lbi";i:18;s:62:"F:/xamp/xampp/htdocs/shop/themes/default/library/group_buy.lbi";i:19;s:57:"F:/xamp/xampp/htdocs/shop/themes/default/library/help.lbi";i:20;s:64:"F:/xamp/xampp/htdocs/shop/themes/default/library/page_footer.lbi";}s:7:"expires";i:1305542681;s:8:"maketime";i:1305539081;}<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<?php exit;?>a:3:{s:8:"template";a:21:{i:0;s:50:"F:/xamp/xampp/htdocs/shop/themes/default/index.dwt";i:1;s:64:"F:/xamp/xampp/htdocs/shop/themes/default/library/page_header.lbi";i:2;s:57:"F:/xamp/xampp/htdocs/shop/themes/default/library/cart.lbi";i:3;s:66:"F:/xamp/xampp/htdocs/shop/themes/default/library/category_tree.lbi";i:4;s:58:"F:/xamp/xampp/htdocs/shop/themes/default/library/top10.lbi";i:5;s:67:"F:/xamp/xampp/htdocs/shop/themes/default/library/promotion_info.lbi";i:6;s:64:"F:/xamp/xampp/htdocs/shop/themes/default/library/order_query.lbi";i:7;s:66:"F:/xamp/xampp/htdocs/shop/themes/default/library/invoice_query.lbi";i:8;s:62:"F:/xamp/xampp/htdocs/shop/themes/default/library/vote_list.lbi";i:9;s:63:"F:/xamp/xampp/htdocs/shop/themes/default/library/email_list.lbi";i:10;s:61:"F:/xamp/xampp/htdocs/shop/themes/default/library/index_ad.lbi";i:11;s:65:"F:/xamp/xampp/htdocs/shop/themes/default/library/new_articles.lbi";i:12;s:72:"F:/xamp/xampp/htdocs/shop/themes/default/library/recommend_promotion.lbi";i:13;s:59:"F:/xamp/xampp/htdocs/shop/themes/default/library/brands.lbi";i:14;s:67:"F:/xamp/xampp/htdocs/shop/themes/default/library/recommend_best.lbi";i:15;s:66:"F:/xamp/xampp/htdocs/shop/themes/default/library/recommend_new.lbi";i:16;s:66:"F:/xamp/xampp/htdocs/shop/themes/default/library/recommend_hot.lbi";i:17;s:60:"F:/xamp/xampp/htdocs/shop/themes/default/library/auction.lbi";i:18;s:62:"F:/xamp/xampp/htdocs/shop/themes/default/library/group_buy.lbi";i:19;s:57:"F:/xamp/xampp/htdocs/shop/themes/default/library/help.lbi";i:20;s:64:"F:/xamp/xampp/htdocs/shop/themes/default/library/page_footer.lbi";}s:7:"expires";i:1305516913;s:8:"maketime";i:1305513313;}<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta name="Generator" content="ECSHOP v2.7.2" />
@@ -29,7 +29,9 @@ var process_request = "正在处理您的请求...";
                          |
             			    			            <a href="tag_cloud.php" >标签云</a>
                          |
-            			    						    			            <a href="quotation.php" >报价单</a>
+            			    			            <a href="wholesale.php" >批发</a>
+                         |
+            			    			            <a href="quotation.php" >报价单</a>
             			        <div class="topNavR"></div>
    </li>
       </ul>
@@ -136,6 +138,79 @@ scrollAmount=3><U><FONT color=red>
  <div class="box_2">
   <div class="top10Tit"></div>
   <div class="top10List clearfix">
+    <ul class="clearfix">
+	<img src="themes/default/images/top_1.gif" class="iteration" />
+	      <li class="topimg">
+      <a href="goods.php?id=21"><img src="images/200905/thumb_img/21_thumb_G_1242109298150.jpg" alt="" class="samllimg" /></a>
+      </li>
+			
+      <li class="iteration1">
+      <a href="goods.php?id=21" title="">金立 A30</a><br />
+      本店售价：<font class="f1">￥2000元</font><br />
+      </li>
+    </ul>
+    <ul class="clearfix">
+	<img src="themes/default/images/top_2.gif" class="iteration" />
+	      <li class="topimg">
+      <a href="goods.php?id=3"><img src="images/200905/thumb_img/3_thumb_G_1241422082679.jpg" alt="" class="samllimg" /></a>
+      </li>
+			
+      <li class="iteration1">
+      <a href="goods.php?id=3" title="">诺基亚原装58...</a><br />
+      本店售价：<font class="f1">￥68元</font><br />
+      </li>
+    </ul>
+    <ul class="clearfix">
+	<img src="themes/default/images/top_3.gif" class="iteration" />
+	      <li class="topimg">
+      <a href="goods.php?id=24"><img src="images/200905/thumb_img/24_thumb_G_1241971981429.jpg" alt="" class="samllimg" /></a>
+      </li>
+			
+      <li class="iteration1">
+      <a href="goods.php?id=24" title="">P806</a><br />
+      本店售价：<font class="f1">￥2000元</font><br />
+      </li>
+    </ul>
+    <ul class="clearfix">
+	<img src="themes/default/images/top_4.gif" class="iteration" />
+			
+      <li >
+      <a href="goods.php?id=12" title="">摩托罗拉A81...</a><br />
+      本店售价：<font class="f1">￥983元</font><br />
+      </li>
+    </ul>
+    <ul class="clearfix">
+	<img src="themes/default/images/top_5.gif" class="iteration" />
+			
+      <li >
+      <a href="goods.php?id=9" title="">诺基亚E66</a><br />
+      本店售价：<font class="f1">￥2298元</font><br />
+      </li>
+    </ul>
+    <ul class="clearfix">
+	<img src="themes/default/images/top_6.gif" class="iteration" />
+			
+      <li >
+      <a href="goods.php?id=22" title="">多普达Touc...</a><br />
+      本店售价：<font class="f1">￥5999元</font><br />
+      </li>
+    </ul>
+    <ul class="clearfix">
+	<img src="themes/default/images/top_7.gif" class="iteration" />
+			
+      <li >
+      <a href="goods.php?id=20" title="">三星BC01</a><br />
+      本店售价：<font class="f1">￥280元</font><br />
+      </li>
+    </ul>
+    <ul class="clearfix">
+	<img src="themes/default/images/top_8.gif" class="iteration" />
+			
+      <li >
+      <a href="goods.php?id=8" title="">飞利浦9@9v</a><br />
+      本店售价：<font class="f1">￥399元</font><br />
+      </li>
+    </ul>
     </div>
  </div>
 </div>
@@ -163,6 +238,22 @@ scrollAmount=3><U><FONT color=red>
     <div id="ECS_ORDER_QUERY" style="margin-top:8px;">
           </div>
   </div>
+ </div>
+</div>
+<div class="blank5"></div>
+<style type="text/css">
+.boxCenterList form{display:inline;}
+.boxCenterList form a{color:#404040; text-decoration:underline;}
+</style>
+<div class="box">
+ <div class="box_1">
+  <h3><span>发货查询</span></h3>
+  <div class="boxCenterList">
+       订单号 2009061909851<br />
+   发货单 232421   <div class="blank"></div>
+      订单号 2009052224892<br />
+   发货单 1123344   <div class="blank"></div>
+     </div>
  </div>
 </div>
 <div class="blank5"></div>

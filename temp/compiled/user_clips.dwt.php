@@ -12,7 +12,9 @@
 <link rel="icon" href="animated_favicon.gif" type="image/gif" />
 <link href="<?php echo $this->_var['ecs_css_path']; ?>" rel="stylesheet" type="text/css" />
 
-<?php echo $this->smarty_insert_scripts(array('files'=>'transport.js,common.js,user.js')); ?>
+<?php echo $this->smarty_insert_scripts(array('files'=>'transport.js,common.js,user.js,jquery-1.5.2.min.js')); ?>
+<script type="text/javascript" src="js/calendar.php?lang=<?php echo $this->_var['cfg_lang']; ?>"></script>
+<link href="js/calendar/calendar.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <?php echo $this->fetch('library/page_header.lbi'); ?>
@@ -620,6 +622,203 @@ copyToClipboard = function(txt)
 
     <?php endif; ?>
 
+  
+  
+  <?php if ($this->_var['action'] == 'agent'): ?>
+  <?php if ($this->_var['affiliate']['config']['separate_by'] == 0): ?>
+  
+  <div class="blank"></div>
+  <h5><span><a name="myrecommend"><?php echo $this->_var['lang']['separate_rule']; ?></a></span></h5>
+  <div class="blank"></div>
+  <?php echo $this->_var['affiliate_agent_intro']; ?>
+  <div class="blank"></div>
+  <div class="blank"></div>
+  <table width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
+	  <tr align="center">
+		  <td bgcolor="#ffffff"><?php echo $this->_var['lang']['affiliate_lever']; ?></td>
+		  <td bgcolor="#ffffff"><?php echo $this->_var['lang']['level_point']; ?></td>
+		  <td bgcolor="#ffffff"><?php echo $this->_var['lang']['level_money']; ?></td>
+	  </tr>
+	  <?php $_from = $this->_var['affdb']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }; $this->push_vars('level', 'val');$this->_foreach['affdb'] = array('total' => count($_from), 'iteration' => 0);
+if ($this->_foreach['affdb']['total'] > 0):
+    foreach ($_from AS $this->_var['level'] => $this->_var['val']):
+        $this->_foreach['affdb']['iteration']++;
+?>
+	  <tr align="center">
+		  <td bgcolor="#ffffff"><?php echo $this->_var['level']; ?></td>
+		  <td bgcolor="#ffffff"><?php echo $this->_var['val']['point']; ?></td>
+		  <td bgcolor="#ffffff"><?php echo $this->_var['val']['money']; ?></td>
+	  </tr>
+	  <?php endforeach; endif; unset($_from); ?><?php $this->pop_vars();; ?>
+  </table>
+  
+  
+  <div class="blank"></div>
+  <h5><span><a name="myrecommend"><?php echo $this->_var['lang']['affiliate_count']; ?></a></span></h5>
+  <div class="blank"></div>
+  <table width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
+	  <tr align="center">
+		  <td bgcolor="#ffffff"><?php echo $this->_var['lang']['affiliate_lever']; ?></td>
+		  <td bgcolor="#ffffff"><?php echo $this->_var['lang']['separate_type']; ?></td>
+		  <td bgcolor="#ffffff"><?php echo $this->_var['lang']['affiliate_count']; ?></td>
+		  <td bgcolor="#ffffff"><?php echo $this->_var['lang']['separate_type']; ?></td>
+		  <td bgcolor="#ffffff"><?php echo $this->_var['lang']['affiliate_count']; ?></td>
+	  </tr>
+	  <?php $_from = $this->_var['affdb']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }; $this->push_vars('level', 'val');$this->_foreach['affdb'] = array('total' => count($_from), 'iteration' => 0);
+if ($this->_foreach['affdb']['total'] > 0):
+    foreach ($_from AS $this->_var['level'] => $this->_var['val']):
+        $this->_foreach['affdb']['iteration']++;
+?>
+	  <tr align="center">
+		  <td bgcolor="#ffffff"><?php echo $this->_var['level']; ?></td>
+		  <?php if (($this->_foreach['affdb']['iteration'] <= 1)): ?><td bgcolor="#ffffff" rowspan="4"><?php echo $this->_var['lang']['agent']; ?></td><?php endif; ?>
+		  <td bgcolor="#ffffff"><?php echo $this->_var['val']['anum']; ?></td>
+		  <?php if (($this->_foreach['affdb']['iteration'] <= 1)): ?><td bgcolor="#ffffff" rowspan="4"><?php echo $this->_var['lang']['distributor']; ?></td><?php endif; ?>
+		  <td bgcolor="#ffffff"><?php echo $this->_var['val']['dnum']; ?></td>
+	  </tr>
+	  <?php endforeach; endif; unset($_from); ?><?php $this->pop_vars();; ?>
+  </table>
+  <div class="blank"></div>
+  <h5><span><a name="myrecommend"><?php echo $this->_var['lang']['direct_referee']; ?></a></span></h5>
+  <div class="blank"></div>
+  <table width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
+	  <tr align="center">
+		  <td bgcolor="#ffffff"><?php echo $this->_var['lang']['num']; ?></td>
+		  <td bgcolor="#ffffff"><?php echo $this->_var['lang']['name']; ?></td>
+		  <td bgcolor="#ffffff"><?php echo $this->_var['lang']['separate_type']; ?></td>
+	  </tr>
+	  <script>
+		  $(document).ready(function() {
+			  $(".distributor").click(function(){
+				  var self = $(this);
+				  var id = self.attr("rel");
+				  var form = $("#detail_search");
+				  form.append('<input type="hidden" value="' + id + '" name="referee_id"/>');
+				  form.submit();
+				  return false;
+			  });
+		  });
+	  </script>
+	  <?php $_from = $this->_var['direct_referee']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }; $this->push_vars('level', 'val');$this->_foreach['affdb'] = array('total' => count($_from), 'iteration' => 0);
+if ($this->_foreach['affdb']['total'] > 0):
+    foreach ($_from AS $this->_var['level'] => $this->_var['val']):
+        $this->_foreach['affdb']['iteration']++;
+?>
+	  <tr align="center">
+		  <td bgcolor="#ffffff"><?php echo $this->_var['level']; ?></td>
+		  <?php if ($this->_var['val']['rank_name'] == $this->_var['lang']['distributor']): ?>
+		  <td bgcolor="#ffffff"><a href="" rel="<?php echo $this->_var['val']['user_id']; ?>" class="distributor"><?php echo $this->_var['val']['user_name']; ?></a></td>
+		  <?php else: ?>
+		  <td bgcolor="#ffffff"><?php echo $this->_var['val']['user_name']; ?></td>
+		  <?php endif; ?>
+		  <td bgcolor="#ffffff"><?php echo $this->_var['val']['rank_name']; ?></td>
+	  </tr>
+	  <?php endforeach; endif; unset($_from); ?><?php $this->pop_vars();; ?>
+  </table>
+  
+  <?php else: ?>
+  
+  
+  <?php endif; ?>
+  
+  <div class="blank"></div>
+  <h5><span><?php echo $this->_var['lang']['separate_detail']; ?></span></h5>
+  <div class="blank"></div>
+  <form action="<?php echo $this->_var['php_self']; ?>?<?php echo $this->_var['query_string']; ?>" method="POST" id="detail_search">
+	  <input type="text" id="start_time_id" readonly="readonly" value="<?php echo $this->_var['start_time']; ?>" name="start_time"/>
+	  <input type="button" class="button" value="选择" onclick="return showCalendar('start_time_id', '%Y-%m-%d', '24', false, 'selbtn1');" id="selbtn1" name="selbtn1">
+	  <input type="text" id="end_time_id" readonly="readonly" value="<?php echo $this->_var['end_time']; ?>" name="end_time"/>
+	  <input type="button" class="button" value="选择" onclick="return showCalendar('end_time_id', '%Y-%m-%d', '24', false, 'selbtn1');" id="selbtn1" name="selbtn1">
+	  <select name="separate_type">
+		  <option value="all">所有</option>
+		  <option value="100" <?php if ($this->_var['separate_type'] == "100"): ?>selected="selected"<?php endif; ?>>一级经销商</option>
+		  <option value="101" <?php if ($this->_var['separate_type'] == "101"): ?>selected="selected"<?php endif; ?>>二级经销商</option>
+		  <option value="102" <?php if ($this->_var['separate_type'] == "102"): ?>selected="selected"<?php endif; ?>>三级经销商</option>
+		  <option value="103" <?php if ($this->_var['separate_type'] == "103"): ?>selected="selected"<?php endif; ?>>四级经销商</option>
+	  </select>
+	  <input type="submit" value="<?php echo $this->_var['lang']['search']; ?>"/>
+  </form>
+  <div class="blank"></div>
+  <table width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
+	  <tr align="center">
+		  <td bgcolor="#ffffff"><?php echo $this->_var['lang']['order_number']; ?></td>
+		  <td bgcolor="#ffffff"><?php echo $this->_var['lang']['separate_type']; ?></td>
+		  <td bgcolor="#ffffff"><?php echo $this->_var['lang']['affiliate_status']; ?></td>
+		  <td bgcolor="#ffffff"><?php echo $this->_var['lang']['affiliate_point']; ?></td>
+		  <td bgcolor="#ffffff"><?php echo $this->_var['lang']['affiliate_money']; ?></td>
+	  </tr>
+	  <?php $_from = $this->_var['logdb']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }; $this->push_vars('', 'val');$this->_foreach['logdb'] = array('total' => count($_from), 'iteration' => 0);
+if ($this->_foreach['logdb']['total'] > 0):
+    foreach ($_from AS $this->_var['val']):
+        $this->_foreach['logdb']['iteration']++;
+?>
+	  <tr align="center">
+		  <td bgcolor="#ffffff"><?php echo $this->_var['val']['order_sn']; ?></td>
+		  <td bgcolor="#ffffff"><?php if ($this->_var['val']['separate_type'] == 100): ?>一级经销商<?php elseif ($this->_var['val']['separate_type'] == 101): ?>二级经销<?php elseif ($this->_var['val']['separate_type'] == 102): ?>三级经销商商<?php elseif ($this->_var['val']['separate_type'] == 103): ?>四级经销商<?php endif; ?></td>
+		  <td bgcolor="#ffffff"><?php echo $this->_var['lang']['affiliate_stats'][$this->_var['val']['is_separate']]; ?></td>
+		  <td bgcolor="#ffffff"><?php echo $this->_var['val']['point']; ?></td>
+		  <td bgcolor="#ffffff"><?php echo $this->_var['val']['money']; ?></td>
+	  </tr>
+	  <?php endforeach; else: ?>
+	  <tr><td colspan="5" align="center" bgcolor="#ffffff"><?php echo $this->_var['lang']['no_records']; ?></td>
+	  </tr>
+	  <?php endif; unset($_from); ?><?php $this->pop_vars();; ?>
+	  <tr align="center">
+		  <td bgcolor="#ffffff" colspan="4">累计</td>
+		  <td bgcolor="#ffffff"><?php echo $this->_var['sum_money']; ?></td>
+	  </tr>
+	  <?php if ($this->_var['logdb']): ?>
+	  <tr>
+		  <td colspan="5" bgcolor="#ffffff">
+			  <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="get">
+				  <div id="pager"> <?php echo $this->_var['lang']['pager_1']; ?><?php echo $this->_var['pager']['record_count']; ?><?php echo $this->_var['lang']['pager_2']; ?><?php echo $this->_var['lang']['pager_3']; ?><?php echo $this->_var['pager']['page_count']; ?><?php echo $this->_var['lang']['pager_4']; ?> <span> <a href="<?php echo $this->_var['pager']['page_first']; ?>"><?php echo $this->_var['lang']['page_first']; ?></a> <a href="<?php echo $this->_var['pager']['page_prev']; ?>"><?php echo $this->_var['lang']['page_prev']; ?></a> <a href="<?php echo $this->_var['pager']['page_next']; ?>"><?php echo $this->_var['lang']['page_next']; ?></a> <a href="<?php echo $this->_var['pager']['page_last']; ?>"><?php echo $this->_var['lang']['page_last']; ?></a> </span>
+					  <select name="page" id="page" onchange="selectPage(this)">
+						  <?php echo $this->html_options(array('options'=>$this->_var['pager']['array'],'selected'=>$this->_var['pager']['page'])); ?>
+					  </select>
+					  <input type="hidden" name="act" value="agent" />
+				  </div>
+			  </form>
+		  </td>
+	  </tr>
+	  <?php endif; ?>
+  </table>
+<div class="blank"></div>
+<h5><span><?php echo $this->_var['lang']['affiliate_code']; ?></span></h5>
+<div class="blank"></div>
+<table width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
+<tr>
+<td width="30%" bgcolor="#ffffff"><a href="<?php echo $this->_var['shopurl']; ?>user.php?u=<?php echo $this->_var['userid']; ?>&act=register&type=agent" target="_blank" class="f6"><?php echo $this->_var['shopname']; ?></a></td>
+<td bgcolor="#ffffff"><input size="40" onclick="this.select();" type="text" value="&lt;a href=&quot;<?php echo $this->_var['shopurl']; ?>user.php?u=<?php echo $this->_var['userid']; ?>&act=register&type=agent&quot; target=&quot;_blank&quot;&gt;<?php echo $this->_var['shopname']; ?>&lt;/a&gt;" style="border:1px solid #ccc;" /> <?php echo $this->_var['lang']['agent_register']; ?><?php echo $this->_var['lang']['recommend_webcode']; ?></td>
+</tr>
+<tr>
+<td width="30%" bgcolor="#ffffff"><a href="<?php echo $this->_var['shopurl']; ?>user.php?u=<?php echo $this->_var['userid']; ?>&act=register&type=distributor" target="_blank" class="f6"><?php echo $this->_var['shopname']; ?></a></td>
+<td bgcolor="#ffffff"><input size="40" onclick="this.select();" type="text" value="&lt;a href=&quot;<?php echo $this->_var['shopurl']; ?>user.php?u=<?php echo $this->_var['userid']; ?>&act=register&type=distributor&quot; target=&quot;_blank&quot;&gt;<?php echo $this->_var['shopname']; ?>&lt;/a&gt;" style="border:1px solid #ccc;" /> <?php echo $this->_var['lang']['distributor_register']; ?><?php echo $this->_var['lang']['recommend_webcode']; ?></td>
+</tr>
+<!--
+<tr>
+<td bgcolor="#ffffff" rowspan="2"><a href="<?php echo $this->_var['shopurl']; ?>user.php?u=<?php echo $this->_var['userid']; ?>&act=register&type=agent" target="_blank" title="<?php echo $this->_var['shopname']; ?>"  class="f6"><img src="<?php echo $this->_var['shopurl']; ?><?php echo $this->_var['logosrc']; ?>" /></a></td>
+<td bgcolor="#ffffff"><input size="40" onclick="this.select();" type="text" value="&lt;a href=&quot;<?php echo $this->_var['shopurl']; ?>user.php?u=<?php echo $this->_var['userid']; ?>&act=register&type=agent&quot; target=&quot;_blank&quot; title=&quot;<?php echo $this->_var['shopname']; ?>&quot;&gt;&lt;img src=&quot;<?php echo $this->_var['shopurl']; ?><?php echo $this->_var['logosrc']; ?>&quot; /&gt;&lt;/a&gt;" style="border:1px solid #ccc;" /> <?php echo $this->_var['lang']['agent_register']; ?><?php echo $this->_var['lang']['recommend_webcode']; ?></td>
+</tr>
+<tr>
+<td bgcolor="#ffffff"><input size="40" onclick="this.select();" type="text" value="&lt;a href=&quot;<?php echo $this->_var['shopurl']; ?>user.php?u=<?php echo $this->_var['userid']; ?>&act=register&type=agent&quot; target=&quot;_blank&quot; title=&quot;<?php echo $this->_var['shopname']; ?>&quot;&gt;&lt;img src=&quot;<?php echo $this->_var['shopurl']; ?><?php echo $this->_var['logosrc']; ?>&quot; /&gt;&lt;/a&gt;" style="border:1px solid #ccc;" /> <?php echo $this->_var['lang']['distributor_register']; ?><?php echo $this->_var['lang']['recommend_webcode']; ?></td>
+</tr>
+<tr>
+<td bgcolor="#ffffff" rowspan="2"><a href="<?php echo $this->_var['shopurl']; ?>user.php?u=<?php echo $this->_var['userid']; ?>&act=register&type=agent" target="_blank" class="f6"><?php echo $this->_var['shopname']; ?></a></td>
+<td bgcolor="#ffffff"><input size="40" onclick="this.select();" type="text" value="[url=<?php echo $this->_var['shopurl']; ?>user.php?u=<?php echo $this->_var['userid']; ?>&act=register&type=agent]<?php echo $this->_var['shopname']; ?>[/url]" style="border:1px solid #ccc;" /> <?php echo $this->_var['lang']['agent_register']; ?><?php echo $this->_var['lang']['recommend_bbscode']; ?></td>
+</tr>
+<tr>
+<td bgcolor="#ffffff"><input size="40" onclick="this.select();" type="text" value="[url=<?php echo $this->_var['shopurl']; ?>user.php?u=<?php echo $this->_var['userid']; ?>&act=register&type=agent]<?php echo $this->_var['shopname']; ?>[/url]" style="border:1px solid #ccc;" /> <?php echo $this->_var['lang']['distributor_register']; ?><?php echo $this->_var['lang']['recommend_bbscode']; ?></td>
+</tr>
+<tr>
+<td bgcolor="#ffffff" rowspan="2"><a href="<?php echo $this->_var['shopurl']; ?>user.php?u=<?php echo $this->_var['userid']; ?>&act=register&type=agent" target="_blank" title="<?php echo $this->_var['shopname']; ?>" class="f6"><img src="<?php echo $this->_var['shopurl']; ?><?php echo $this->_var['logosrc']; ?>" /></a></td>
+<td bgcolor="#ffffff"><input size="40" onclick="this.select();" type="text" value="[url=<?php echo $this->_var['shopurl']; ?>user.php?u=<?php echo $this->_var['userid']; ?>&act=register&type=agent][img]<?php echo $this->_var['shopurl']; ?><?php echo $this->_var['logosrc']; ?>[/img][/url]" style="border:1px solid #ccc;" /> <?php echo $this->_var['lang']['agent_register']; ?><?php echo $this->_var['lang']['recommend_bbscode']; ?></td>
+</tr>
+<tr>
+<td bgcolor="#ffffff"><input size="40" onclick="this.select();" type="text" value="[url=<?php echo $this->_var['shopurl']; ?>user.php?u=<?php echo $this->_var['userid']; ?>&act=register&type=agent][img]<?php echo $this->_var['shopurl']; ?><?php echo $this->_var['logosrc']; ?>[/img][/url]" style="border:1px solid #ccc;" /> <?php echo $this->_var['lang']['distributor_register']; ?><?php echo $this->_var['lang']['recommend_bbscode']; ?></td>
+</tr>
+-->
+</table>
+  <?php endif; ?>
   
       </div>
      </div>

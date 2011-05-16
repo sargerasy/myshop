@@ -1111,17 +1111,6 @@
        <?php endif; ?>
         <?php endif; ?>
         
-        
-		<?php if ($this->_var['action'] == 'agent'): ?>
-		  <h5><span><?php echo $this->_var['lang']['referee_distributor_info']; ?></span></h5>
-		  <h5><span><?php echo $this->_var['lang']['referee_agent_info']; ?></span></h5>
-		<?php endif; ?>
-        
-        
-		<?php if ($this->_var['action'] == 'distributor'): ?>
-		  <h5><span><?php echo $this->_var['lang']['order_info']; ?></span></h5>
-		<?php endif; ?>
-        
 
 
 

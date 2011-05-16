@@ -737,4 +737,11 @@ $_LANG['referee_distributor_info'] = '经销商信息';
 $_LANG['referee_agent_info'] = '业务经理信息';
 $_LANG['order_info'] = '订单信息';
 $_LANG['no_permission'] = '无此权限';
+$_LANG['separate_rule'] = '分成规则';
+$_LANG['separate_type'] = '类型';
+$_LANG['affiliate_count'] = '下线人数';
+$_LANG['separate_detail'] = '分成明细';
+$_LANG['direct_referee'] = '直接下线';
+$_LANG['agent_register'] = '业务经理注册';
+$_LANG['distributor_register'] = '经销商注册';
 ?>
