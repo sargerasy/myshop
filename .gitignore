@@ -1,0 +1,7 @@
+*.pyc
+*.pyo
+*.log
+*.pid
+media/vuuvv/source/script/*
+media/vuuvv/build/**/*
+temp/*
