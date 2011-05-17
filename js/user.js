@@ -390,6 +390,45 @@ function registed_callback(result)
   }
 }
 
+function is_agent(username)
+{
+	Ajax.call( 'user.php?act=is_agent', 'referee_name=' + username, agent_callback, 'GET', 'TEXT', true, true);
+}
+
+function agent_callback(result)
+{
+  if ( result != "false" )
+  {
+    document.getElementById('referee_name_notice').innerHTML = msg_can_rg;
+    document.forms['formUser'].elements['referee'].value = result;
+    document.forms['formUser'].elements['Submit'].disabled = '';
+  }
+  else
+  {
+    document.getElementById('referee_name_notice').innerHTML = msg_un_agent;
+    document.forms['formUser'].elements['Submit'].disabled = 'disabled';
+  }
+}
+
+function check_phone(phone)
+{
+	Ajax.call( 'user.php?act=check_phone', 'mobile_phone=' + phone, check_phone_callback, 'GET', 'TEXT', true, true);
+}
+
+function check_phone_callback(result)
+{
+  if ( result == "true" )
+  {
+    document.getElementById('mobile_phone_notice').innerHTML = msg_can_rg;
+    document.forms['formUser'].elements['Submit'].disabled = '';
+  }
+  else
+  {
+    document.getElementById('mobile_phone_notice').innerHTML = msg_un_phone;
+    document.forms['formUser'].elements['Submit'].disabled = 'disabled';
+  }
+}
+
 function checkEmail(email)
 {
   var submit_disabled = false;

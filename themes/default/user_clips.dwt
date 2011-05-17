@@ -649,6 +649,9 @@ copyToClipboard = function(txt)
 		  <td bgcolor="#ffffff">{$lang.num}</td>
 		  <td bgcolor="#ffffff">{$lang.name}</td>
 		  <td bgcolor="#ffffff">{$lang.separate_type}</td>
+		  <td bgcolor="#ffffff">{$lang.referer_count}</td>
+		  <td bgcolor="#ffffff">{$lang.order_count}</td>
+		  <td bgcolor="#ffffff">{$lang.order_money}</td>
 	  </tr>
 	  <script>
 		  $(document).ready(function() {
@@ -666,11 +669,14 @@ copyToClipboard = function(txt)
 	  <tr align="center">
 		  <td bgcolor="#ffffff">{$level}</td>
 		  {if $val.rank_name eq $lang.distributor}
-		  <td bgcolor="#ffffff"><a href="" rel="{$val.user_id}" class="distributor">{$val.user_name}</a></td>
+		  <td bgcolor="#ffffff"><a href="" rel="{$val._uid}" class="distributor">{$val.user_name}</a></td>
 		  {else}
 		  <td bgcolor="#ffffff">{$val.user_name}</td>
 		  {/if}
 		  <td bgcolor="#ffffff">{$val.rank_name}</td>
+		  <td bgcolor="#ffffff">{$val.ucount}</td>
+		  <td bgcolor="#ffffff">{$val.ocount}</td>
+		  <td bgcolor="#ffffff">{$val.mcount}</td>
 	  </tr>
 	  <!-- {/foreach} -->
   </table>
@@ -700,6 +706,7 @@ copyToClipboard = function(txt)
   <div class="blank"></div>
   <table width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
 	  <tr align="center">
+		  <td bgcolor="#ffffff">{$lang.name}</td>
 		  <td bgcolor="#ffffff">{$lang.order_number}</td>
 		  <td bgcolor="#ffffff">{$lang.separate_type}</td>
 		  <td bgcolor="#ffffff">{$lang.affiliate_status}</td>
@@ -708,6 +715,7 @@ copyToClipboard = function(txt)
 	  </tr>
 	  <!-- {foreach from=$logdb item=val name=logdb} -->
 	  <tr align="center">
+		  <td bgcolor="#ffffff">{$val.uuser}</td>
 		  <td bgcolor="#ffffff">{$val.order_sn}</td>
 		  <td bgcolor="#ffffff">{if $val.separate_type == 100}一级经销商{elseif $val.separate_type == 101}二级经销{elseif $val.separate_type == 102}三级经销商商{elseif $val.separate_type == 103}四级经销商{/if}</td>
 		  <td bgcolor="#ffffff">{$lang.affiliate_stats[$val.is_separate]}</td>
@@ -715,16 +723,16 @@ copyToClipboard = function(txt)
 		  <td bgcolor="#ffffff">{$val.money}</td>
 	  </tr>
 	  {foreachelse}
-	  <tr><td colspan="5" align="center" bgcolor="#ffffff">{$lang.no_records}</td>
+	  <tr><td colspan="6" align="center" bgcolor="#ffffff">{$lang.no_records}</td>
 	  </tr>
 	  <!-- {/foreach} -->
 	  <tr align="center">
-		  <td bgcolor="#ffffff" colspan="4">累计</td>
+		  <td bgcolor="#ffffff" colspan="5">累计</td>
 		  <td bgcolor="#ffffff">{$sum_money}</td>
 	  </tr>
 	  <!-- {if $logdb} -->
 	  <tr>
-		  <td colspan="5" bgcolor="#ffffff">
+		  <td colspan="6" bgcolor="#ffffff">
 			  <form action="{$smarty.server.PHP_SELF}" method="get">
 				  <div id="pager"> {$lang.pager_1}{$pager.record_count}{$lang.pager_2}{$lang.pager_3}{$pager.page_count}{$lang.pager_4} <span> <a href="{$pager.page_first}">{$lang.page_first}</a> <a href="{$pager.page_prev}">{$lang.page_prev}</a> <a href="{$pager.page_next}">{$lang.page_next}</a> <a href="{$pager.page_last}">{$lang.page_last}</a> </span>
 					  <select name="page" id="page" onchange="selectPage(this)">

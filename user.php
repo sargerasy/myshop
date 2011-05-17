@@ -29,7 +29,7 @@ $smarty->assign('affiliate', $affiliate);
 
 // 不需要登录的操作或自己验证是否登录（如ajax处理）的act
 $not_login_arr =
-array('login','act_login','register','act_register','act_edit_password','get_password','send_pwd_email','password', 'signin', 'add_tag', 'collect', 'return_to_cart', 'logout', 'email_list', 'validate_email', 'send_hash_mail', 'order_query', 'is_registered', 'check_email','clear_history','qpassword_name', 'get_passwd_question', 'check_answer');
+array('login','act_login','register','act_register','act_edit_password','get_password','send_pwd_email','password', 'signin', 'add_tag', 'collect', 'return_to_cart', 'logout', 'email_list', 'validate_email', 'send_hash_mail', 'order_query', 'is_agent', 'is_registered', 'check_email','clear_history','qpassword_name', 'get_passwd_question', 'check_answer', 'check_phone');
 
 /* 显示页面的action列表 */
 $ui_arr = array('register', 'login', 'profile', 'order_list', 'order_detail', 'address_list', 'collection_list',
@@ -164,7 +164,14 @@ elseif ($action == 'act_register')
         $other['qq'] = isset($_POST['extend_field2']) ? $_POST['extend_field2'] : '';
         $other['office_phone'] = isset($_POST['extend_field3']) ? $_POST['extend_field3'] : '';
         $other['home_phone'] = isset($_POST['extend_field4']) ? $_POST['extend_field4'] : '';
-        $other['mobile_phone'] = isset($_POST['extend_field5']) ? $_POST['extend_field5'] : '';
+		if ($type == 'agent' || $type == 'distributor')
+		{
+			$other['mobile_phone'] = isset($_POST['mobile_phone']) ? $_POST['mobile_phone'] : '';
+		}
+		else
+		{
+			$other['mobile_phone'] = isset($_POST['extend_field5']) ? $_POST['extend_field5'] : '';
+		}
 		$other['referee'] = isset($_POST['referee']) ? $_POST['referee'] : '';
         $sel_question = empty($_POST['sel_question']) ? '' : $_POST['sel_question'];
         $passwd_answer = isset($_POST['passwd_answer']) ? trim($_POST['passwd_answer']) : '';
@@ -306,6 +313,39 @@ elseif ($action == 'is_registered')
     {
         echo 'true';
     }
+}
+
+elseif ($action == 'is_agent')
+{
+    $username = trim($_GET['referee_name']);
+    $username = json_str_iconv($username);
+
+	$sql = 'SELECT u.user_id, r.rank_name FROM ' . $ecs->table('users') . "u LEFT JOIN " . $ecs->table('user_rank') . " r ON u.user_rank=r.rank_id" . " WHERE user_name = '$username'";
+	$row = $db->getRow($sql);
+	if ($row['rank_name'] == $_LANG['agent'])
+	{
+		echo $row['user_id'];
+	}
+	else
+	{
+		echo 'false';
+	}
+}
+
+elseif ($action == 'check_phone')
+{
+    $phone = trim($_GET['mobile_phone']);
+    $phone = json_str_iconv($phone);
+	$sql = 'SELECT mobile_phone FROM ' . $ecs->table('users') . " WHERE mobile_phone = '$phone'";
+	$row = $db->getRow($sql);
+	if ($row)
+	{
+		echo 'false';
+	}
+	else
+	{
+		echo 'true';
+	}
 }
 
 /* 验证用户邮箱地址是否被注册 */
@@ -2119,17 +2159,20 @@ elseif ($action == 'affiliate')
                 $count = 0;
                 if ($up_uid)
                 {
-                    $sql = "SELECT user_id FROM " . $ecs->table('users') . " WHERE parent_id IN($up_uid)";
+                    $sql = "SELECT user_id, r.rank_name FROM " . $ecs->table('users') . " u LEFT JOIN " . $ecs->table('user_rank') . " r ON u.user_rank=r.rank_id " . " WHERE parent_id IN($up_uid)";
                     $query = $db->query($sql);
                     $up_uid = '';
                     while ($rt = $db->fetch_array($query))
                     {
-                        $up_uid .= $up_uid ? ",'$rt[user_id]'" : "'$rt[user_id]'";
-                        if($i < $num)
-                        {
-                            $all_uid .= ", '$rt[user_id]'";
-                        }
-                        $count++;
+						if($rt['rank_name'] != $_LANG['agent'] && $rt['rank_name'] != $_LANG['distributor'])
+						{
+							$up_uid .= $up_uid ? ",'$rt[user_id]'" : "'$rt[user_id]'";
+							if($i < $num)
+							{
+								$all_uid .= ", '$rt[user_id]'";
+							}
+							$count++;
+						}
                     }
                 }
                 $affdb[$i]['num'] = $count;
@@ -2777,6 +2820,11 @@ elseif ($action == 'clear_history')
 /* 业务经理专区 */
 elseif ($action == 'agent')
 {
+	if ($rank['rank_name'] != $_LANG['agent'])
+	{
+		show_message($_LANG['ws_user_rank'], $_LANG['ws_return_home'], 'index.php');
+	}
+
 	$smarty->assign('query_string', $_SERVER['QUERY_STRING']);
 	$smarty->assign('php_self', $_SERVER['PHP_SELF']);
 	$page       = !empty($_REQUEST['page'])  && intval($_REQUEST['page'])  > 0 ? intval($_REQUEST['page'])  : 1;
@@ -2784,8 +2832,6 @@ elseif ($action == 'agent')
 
 	$affiliate = $affiliate_agent ? $affiliate_agent : array();
 
-	if(empty($affiliate['config']['separate_by']))
-	{
 		//业务经理分成
 		$affdb = array();
 		$num = count($affiliate['item']);
@@ -2825,7 +2871,13 @@ elseif ($action == 'agent')
 		$smarty->assign('affdb', $affdb);
 
 		$up_uid = "'$user_id'";
-		$sql = "SELECT user_id, user_name, r.rank_name FROM " . $ecs->table('users') . " u LEFT JOIN ". $ecs->table('user_rank') . " r ON u.user_rank=r.rank_id " . " WHERE parent_id=$up_uid";
+		$sql = "SELECT u.user_id as _uid, u.user_name, count(u1.user_name) as ucount, r.rank_name, u.parent_id as pid, o.user_id as _ouid, count(o.order_id) as ocount, SUM(o.goods_amount) as mcount FROM " . $ecs->table('users') . " u ". 
+			" LEFT JOIN " . $ecs->table('users') . " u1 ON u1.parent_id=u.user_id ".
+			" LEFT JOIN " . $ecs->table('order_info') . " o ON o.user_id=u.user_id ".
+			" LEFT JOIN " . $ecs->table('user_rank') . " r ON u.user_rank=r.rank_id ". 
+			" GROUP BY _uid ".
+			" HAVING pid=$up_uid".
+			" ORDER BY rank_name DESC, ucount DESC, ocount DESC";
 		$query = $db->query($sql);
 		$direct_referee = array();
 		while ($rt = $db->fetch_array($query))
@@ -2868,7 +2920,7 @@ elseif ($action == 'agent')
 	" LEFT JOIN " . $ecs->table('affiliate_log') . " a ON o.order_id = a.order_id" .
 	" WHERE (separate_type>100 or is_wholesale=1) AND o.user_id > 0 AND (u.parent_id IN ($all_uid) AND o.is_separate = 0 OR a.user_id = '$user_id' AND o.is_separate > 0)".$addition_clause;
 
-		$sql = "SELECT o.*, a.log_id, a.user_id as suid,  a.user_name as auser, a.money, a.point, a.separate_type FROM " . $ecs->table('order_info') . " o".
+		$sql = "SELECT o.*, a.log_id, a.user_id as suid,  a.user_name as auser, u.user_name as uuser, a.money, a.point, a.separate_type FROM " . $ecs->table('order_info') . " o".
 				" LEFT JOIN".$ecs->table('users')." u ON o.user_id = u.user_id".
 				" LEFT JOIN " . $ecs->table('affiliate_log') . " a ON o.order_id = a.order_id" .
 	" WHERE (separate_type>100 or is_wholesale=1) AND o.user_id > 0 AND (u.parent_id IN ($all_uid) AND o.is_separate = 0 OR a.user_id = '$user_id' AND o.is_separate > 0)".$addition_clause;
@@ -2889,7 +2941,6 @@ elseif ($action == 'agent')
 		*/
 
 		$affiliate_intro = nl2br(sprintf($_LANG['affiliate_intro'][$affiliate['config']['separate_by']], $affiliate['config']['expire'], $_LANG['expire_unit'][$affiliate['config']['expire_unit']], $affiliate['config']['level_register_all'], $affiliate['config']['level_register_up'], $affiliate['config']['level_money_all'], $affiliate['config']['level_point_all']));
-	}
 	$row = $db->getRow($sqlcount);
 	$count = $row['count'];
 	$sum_money = $row['sum_money'];

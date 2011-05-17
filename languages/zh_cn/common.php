@@ -744,4 +744,9 @@ $_LANG['separate_detail'] = '分成明细';
 $_LANG['direct_referee'] = '直接下线';
 $_LANG['agent_register'] = '业务经理注册';
 $_LANG['distributor_register'] = '经销商注册';
+$_LANG['referee'] = '介绍人';
+$_LANG['mobile_phone'] = '手机';
+$_LANG['referer_count'] = '直接下线数';
+$_LANG['order_count'] = '订单总数';
+$_LANG['order_money'] = '订单总金额';
 ?>

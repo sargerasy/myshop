@@ -686,6 +686,9 @@ if ($this->_foreach['affdb']['total'] > 0):
 		  <td bgcolor="#ffffff"><?php echo $this->_var['lang']['num']; ?></td>
 		  <td bgcolor="#ffffff"><?php echo $this->_var['lang']['name']; ?></td>
 		  <td bgcolor="#ffffff"><?php echo $this->_var['lang']['separate_type']; ?></td>
+		  <td bgcolor="#ffffff"><?php echo $this->_var['lang']['referer_count']; ?></td>
+		  <td bgcolor="#ffffff"><?php echo $this->_var['lang']['order_count']; ?></td>
+		  <td bgcolor="#ffffff"><?php echo $this->_var['lang']['order_money']; ?></td>
 	  </tr>
 	  <script>
 		  $(document).ready(function() {
@@ -707,11 +710,14 @@ if ($this->_foreach['affdb']['total'] > 0):
 	  <tr align="center">
 		  <td bgcolor="#ffffff"><?php echo $this->_var['level']; ?></td>
 		  <?php if ($this->_var['val']['rank_name'] == $this->_var['lang']['distributor']): ?>
-		  <td bgcolor="#ffffff"><a href="" rel="<?php echo $this->_var['val']['user_id']; ?>" class="distributor"><?php echo $this->_var['val']['user_name']; ?></a></td>
+		  <td bgcolor="#ffffff"><a href="" rel="<?php echo $this->_var['val']['_uid']; ?>" class="distributor"><?php echo $this->_var['val']['user_name']; ?></a></td>
 		  <?php else: ?>
 		  <td bgcolor="#ffffff"><?php echo $this->_var['val']['user_name']; ?></td>
 		  <?php endif; ?>
 		  <td bgcolor="#ffffff"><?php echo $this->_var['val']['rank_name']; ?></td>
+		  <td bgcolor="#ffffff"><?php echo $this->_var['val']['ucount']; ?></td>
+		  <td bgcolor="#ffffff"><?php echo $this->_var['val']['ocount']; ?></td>
+		  <td bgcolor="#ffffff"><?php echo $this->_var['val']['mcount']; ?></td>
 	  </tr>
 	  <?php endforeach; endif; unset($_from); ?><?php $this->pop_vars();; ?>
   </table>
@@ -741,6 +747,7 @@ if ($this->_foreach['affdb']['total'] > 0):
   <div class="blank"></div>
   <table width="100%" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
 	  <tr align="center">
+		  <td bgcolor="#ffffff"><?php echo $this->_var['lang']['name']; ?></td>
 		  <td bgcolor="#ffffff"><?php echo $this->_var['lang']['order_number']; ?></td>
 		  <td bgcolor="#ffffff"><?php echo $this->_var['lang']['separate_type']; ?></td>
 		  <td bgcolor="#ffffff"><?php echo $this->_var['lang']['affiliate_status']; ?></td>
@@ -753,6 +760,7 @@ if ($this->_foreach['logdb']['total'] > 0):
         $this->_foreach['logdb']['iteration']++;
 ?>
 	  <tr align="center">
+		  <td bgcolor="#ffffff"><?php echo $this->_var['val']['uuser']; ?></td>
 		  <td bgcolor="#ffffff"><?php echo $this->_var['val']['order_sn']; ?></td>
 		  <td bgcolor="#ffffff"><?php if ($this->_var['val']['separate_type'] == 100): ?>一级经销商<?php elseif ($this->_var['val']['separate_type'] == 101): ?>二级经销<?php elseif ($this->_var['val']['separate_type'] == 102): ?>三级经销商商<?php elseif ($this->_var['val']['separate_type'] == 103): ?>四级经销商<?php endif; ?></td>
 		  <td bgcolor="#ffffff"><?php echo $this->_var['lang']['affiliate_stats'][$this->_var['val']['is_separate']]; ?></td>
@@ -760,16 +768,16 @@ if ($this->_foreach['logdb']['total'] > 0):
 		  <td bgcolor="#ffffff"><?php echo $this->_var['val']['money']; ?></td>
 	  </tr>
 	  <?php endforeach; else: ?>
-	  <tr><td colspan="5" align="center" bgcolor="#ffffff"><?php echo $this->_var['lang']['no_records']; ?></td>
+	  <tr><td colspan="6" align="center" bgcolor="#ffffff"><?php echo $this->_var['lang']['no_records']; ?></td>
 	  </tr>
 	  <?php endif; unset($_from); ?><?php $this->pop_vars();; ?>
 	  <tr align="center">
-		  <td bgcolor="#ffffff" colspan="4">累计</td>
+		  <td bgcolor="#ffffff" colspan="5">累计</td>
 		  <td bgcolor="#ffffff"><?php echo $this->_var['sum_money']; ?></td>
 	  </tr>
 	  <?php if ($this->_var['logdb']): ?>
 	  <tr>
-		  <td colspan="5" bgcolor="#ffffff">
+		  <td colspan="6" bgcolor="#ffffff">
 			  <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="get">
 				  <div id="pager"> <?php echo $this->_var['lang']['pager_1']; ?><?php echo $this->_var['pager']['record_count']; ?><?php echo $this->_var['lang']['pager_2']; ?><?php echo $this->_var['lang']['pager_3']; ?><?php echo $this->_var['pager']['page_count']; ?><?php echo $this->_var['lang']['pager_4']; ?> <span> <a href="<?php echo $this->_var['pager']['page_first']; ?>"><?php echo $this->_var['lang']['page_first']; ?></a> <a href="<?php echo $this->_var['pager']['page_prev']; ?>"><?php echo $this->_var['lang']['page_prev']; ?></a> <a href="<?php echo $this->_var['pager']['page_next']; ?>"><?php echo $this->_var['lang']['page_next']; ?></a> <a href="<?php echo $this->_var['pager']['page_last']; ?>"><?php echo $this->_var['lang']['page_last']; ?></a> </span>
 					  <select name="page" id="page" onchange="selectPage(this)">

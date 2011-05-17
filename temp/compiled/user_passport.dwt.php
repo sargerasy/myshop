@@ -145,6 +145,23 @@
             <span style="color:#FF0000" id="conform_password_notice"> *</span>
           </td>
         </tr>
+		<?php if ($this->_var['type'] == 'agent' || $this->_var['type'] == 'distributor'): ?>
+        <tr>
+          <td align="right"><?php echo $this->_var['lang']['referee']; ?></td>
+          <td>
+				<input name="referee_name" type="text" id="referee_name" value="<?php echo $this->_var['referee']['user_name']; ?>" onblur="is_agent(this.value);"  class="inputBg" style="width:179px;"/>
+				<span style="color:#FF0000" id="referee_name_notice"> *</span>
+				<input name="referee" type="hidden" value="<?php echo $this->_var['referee']['user_id']; ?>"/>
+          </td>
+        </tr>
+        <tr>
+          <td align="right"><?php echo $this->_var['lang']['mobile_phone']; ?></td>
+          <td>
+				<input name="mobile_phone" type="text" id="mobile_phone" value="" onblur="check_phone(this.value);"  class="inputBg" style="width:179px;"/>
+				<span style="color:#FF0000" id="mobile_phone_notice"> *</span>
+          </td>
+        </tr>
+		<?php endif; ?>
         <?php $_from = $this->_var['extend_info_list']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }; $this->push_vars('', 'field');if (count($_from)):
     foreach ($_from AS $this->_var['field']):
 ?>
@@ -165,13 +182,14 @@
           </td>
         </tr>
 	<?php else: ?>
+			<?php if (! ( $this->_var['type'] == 'agent' || $this->_var['type'] == 'distributor' ) || $this->_var['field']['reg_field_name'] != $this->_var['lang']['label_phone']): ?>
         <tr>
-          <td align="right" <?php if ($this->_var['field']['is_need'] || ( ( $this->_var['type'] == 'agent' || $this->_var['type'] == 'distributor' ) && ( $this->_var['field']['reg_field_name'] == $this->_var['lang']['label_phone'] || $this->_var['field']['reg_field_name'] == $this->_var['lang']['label_referee'] ) )): ?>id="extend_field<?php echo $this->_var['field']['id']; ?>i"<?php endif; ?>><?php echo $this->_var['field']['reg_field_name']; ?>
+          <td align="right" <?php if ($this->_var['field']['is_need']): ?>id="extend_field<?php echo $this->_var['field']['id']; ?>i"<?php endif; ?>><?php echo $this->_var['field']['reg_field_name']; ?>
           <td>
-			  <input name="extend_field<?php echo $this->_var['field']['id']; ?>" type="text" size="25" <?php if ($this->_var['field']['reg_field_name'] == $this->_var['lang']['label_referee']): ?>readonly="readonly" value="<?php echo $this->_var['referee']['user_name']; ?>"<?php endif; ?> /><?php if ($this->_var['field']['is_need'] || ( ( $this->_var['type'] == 'agent' || $this->_var['type'] == 'distributor' ) && ( $this->_var['field']['reg_field_name'] == $this->_var['lang']['label_phone'] || $this->_var['field']['reg_field_name'] == $this->_var['lang']['label_referee'] ) )): ?><span style="color:#FF0000"> *</span><?php endif; ?>
-			  <input name="referee" type="hidden" value="<?php echo $this->_var['referee']['user_id']; ?>"/>
+			  <input name="extend_field<?php echo $this->_var['field']['id']; ?>" type="text"  size="25" /><?php if ($this->_var['field']['is_need']): ?><span style="color:#FF0000" id="extend_field<?php echo $this->_var['field']['id']; ?>_notice"> *</span><?php endif; ?>
           </td>
         </tr>
+			<?php endif; ?>
 	<?php endif; ?>
 	<?php endforeach; endif; unset($_from); ?><?php $this->pop_vars();; ?>
       <?php if ($this->_var['enabled_captcha']): ?>

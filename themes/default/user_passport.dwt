@@ -144,6 +144,23 @@
             <span style="color:#FF0000" id="conform_password_notice"> *</span>
           </td>
         </tr>
+		{if $type eq 'agent' || $type eq 'distributor'}
+        <tr>
+          <td align="right">{$lang.referee}</td>
+          <td>
+				<input name="referee_name" type="text" id="referee_name" value="{$referee.user_name}" onblur="is_agent(this.value);"  class="inputBg" style="width:179px;"/>
+				<span style="color:#FF0000" id="referee_name_notice"> *</span>
+				<input name="referee" type="hidden" value="{$referee.user_id}"/>
+          </td>
+        </tr>
+        <tr>
+          <td align="right">{$lang.mobile_phone}</td>
+          <td>
+				<input name="mobile_phone" type="text" id="mobile_phone" value="" onblur="check_phone(this.value);"  class="inputBg" style="width:179px;"/>
+				<span style="color:#FF0000" id="mobile_phone_notice"> *</span>
+          </td>
+        </tr>
+		{/if}
         <!-- {foreach from=$extend_info_list item=field} -->
 	<!-- {if $field.id eq 6} -->
         <tr>
@@ -162,13 +179,14 @@
           </td>
         </tr>
 	<!-- {else} -->
+			{if !($type eq 'agent' || $type eq 'distributor') || $field.reg_field_name != $lang.label_phone}
         <tr>
-          <td align="right" <!-- {if $field.is_need || (($type eq 'agent' || $type eq 'distributor') && ($field.reg_field_name eq $lang.label_phone || $field.reg_field_name eq $lang.label_referee))} -->id="extend_field{$field.id}i"<!--{/if}-->>{$field.reg_field_name}
+          <td align="right" <!-- {if $field.is_need } -->id="extend_field{$field.id}i"<!--{/if}-->>{$field.reg_field_name}
           <td>
-			  <input name="extend_field{$field.id}" type="text" size="25" <!-- {if $field.reg_field_name eq $lang.label_referee} -->readonly="readonly" value="{$referee.user_name}"<!-- {/if} --> /><!-- {if $field.is_need || (($type eq 'agent' || $type eq 'distributor') && ($field.reg_field_name eq $lang.label_phone || $field.reg_field_name eq $lang.label_referee))} --><span style="color:#FF0000"> *</span><!-- {/if} -->
-			  <input name="referee" type="hidden" value="{$referee.user_id}"/>
+			  <input name="extend_field{$field.id}" type="text"  size="25" /><!-- {if $field.is_need} --><span style="color:#FF0000" id="extend_field{$field.id}_notice"> *</span><!-- {/if} -->
           </td>
         </tr>
+			{/if}
 	<!-- {/if} -->
 	<!-- {/foreach} -->
       <!-- 判断是否启用验证码{if $enabled_captcha} -->
