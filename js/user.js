@@ -301,7 +301,7 @@ function chkstr(str)
 {
   for (var i = 0; i < str.length; i++)
   {
-    if (str.charCodeAt(i) < 127 && !str.substr(i,1).match(/^\w+$/ig))
+    if (str.charCodeAt(i) < 127 && !str.substr(i,1).match(/^[\w\-]+$/ig))
     {
       return false;
     }

@@ -1706,8 +1706,13 @@ function get_user_bonus($user_id = 0)
  **/
 function set_affiliate()
 {
+	set_affiliate_ex($_GET['u']);
+}
+
+function set_affiliate_ex($id)
+{
     $config = unserialize($GLOBALS['_CFG']['affiliate']);
-    if (!empty($_GET['u']) && $config['on'] == 1)
+    if (!empty($id) && $config['on'] == 1)
     {
         if(!empty($config['config']['expire']))
         {
@@ -1727,11 +1732,11 @@ function set_affiliate()
             {
                 $c = 1;
             }
-            setcookie('ecshop_affiliate_uid', intval($_GET['u']), gmtime() + 3600 * $config['config']['expire'] * $c);
+            setcookie('ecshop_affiliate_uid', intval($id), gmtime() + 3600 * $config['config']['expire'] * $c);
         }
         else
         {
-            setcookie('ecshop_affiliate_uid', intval($_GET['u']), gmtime() + 3600 * 24); // 过期时间为 1 天
+            setcookie('ecshop_affiliate_uid', intval($id), gmtime() + 3600 * 24); // 过期时间为 1 天
         }
     }
 }

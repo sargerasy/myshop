@@ -324,6 +324,7 @@ elseif ($action == 'is_agent')
 	$row = $db->getRow($sql);
 	if ($row['rank_name'] == $_LANG['agent'])
 	{
+		set_affiliate_ex($row['user_id']);
 		echo $row['user_id'];
 	}
 	else
