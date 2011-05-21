@@ -1738,6 +1738,7 @@ function set_affiliate_ex($id)
         {
             setcookie('ecshop_affiliate_uid', intval($id), gmtime() + 3600 * 24); // 过期时间为 1 天
         }
+		$_COOKIE['ecshop_affiliate_uid'] = $id;
     }
 }
 

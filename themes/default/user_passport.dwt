@@ -11,8 +11,13 @@
 <link rel="icon" href="animated_favicon.gif" type="image/gif" />
 <link href="{$ecs_css_path}" rel="stylesheet" type="text/css" />
 {* 包含脚本文件 *}
-{insert_scripts files='common.js,user.js,transport.js'}
+{insert_scripts files='common.js,user.js,transport.js,jquery-1.5.2.min.js'}
 
+<script>
+	$(document).ready(function() {
+		is_agent($('#referee_name').val());
+	});
+</script>
 <body>
 <!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
 <!--当前位置 start-->
