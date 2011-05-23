@@ -229,6 +229,9 @@ function index_get_new_articles()
 }
 
 /**
+ * 获得批发物品列表
+ */
+/**
  * 获得最新的团购活动
  *
  * @access  private

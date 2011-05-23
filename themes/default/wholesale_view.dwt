@@ -329,6 +329,11 @@ function reg(str){
       </li>
       <!--{/if}-->
       <li class="clearfix">
+       <dd style="width: 100%">
+	   <strong>经销商出厂价：</strong><font id="ECS_WHOLE_SALE_PRICE" class="shop">  {$ws_price.price}/个, {$ws_price.quantity}个/件</font>
+       </dd>
+      </li>
+      <li class="clearfix">
        <dd>
        <strong>{$lang.amount}：</strong><font id="ECS_GOODS_AMOUNT" class="shop"></font>
        </dd>
@@ -645,7 +650,7 @@ function changePrice()
   var attr = getSelectedAttributes(document.forms['ECS_FORMBUY']);
   var qty = document.forms['ECS_FORMBUY'].elements['number'].value;
 
-  Ajax.call('goods.php', 'act=price&id=' + goodsId + '&attr=' + attr + '&number=' + qty, changePriceResponse, 'GET', 'JSON');
+  Ajax.call('wholesale.php', 'act=price&id=' + goodsId + '&attr=' + attr + '&number=' + qty, changePriceResponse, 'GET', 'JSON');
 }
 
 /**
